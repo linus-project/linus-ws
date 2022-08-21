@@ -17,7 +17,7 @@ public class UserController {
         userService.addUser(user);
     }
 
-    @PostMapping("/user/common/login")
+    @PostMapping("/user/login")
     public User login(@RequestBody Login login){
         if (!login.getAdminKey().equals("")){
             return userService.login(login.getUsername(), login.getPassword(), login.getAdminKey());
@@ -25,7 +25,7 @@ public class UserController {
         return userService.login(login.getUsername(), login.getPassword());
     }
 
-    @GetMapping("/user/common/list")
+    @GetMapping("/user/list")
     public List<User> listUsers(){
         return userService.listUsers();
     }
