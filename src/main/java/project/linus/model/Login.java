@@ -1,8 +1,11 @@
 package project.linus.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Login {
     String username = "";
     String password = "";
+    @JsonIgnore
     String adminKey = "";
 
     public String getUsername() {

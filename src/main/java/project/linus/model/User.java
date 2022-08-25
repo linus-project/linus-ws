@@ -1,5 +1,7 @@
 package project.linus.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class User {
     private String name;
     private String username;
@@ -7,6 +9,7 @@ public class User {
     private String email;
     private Integer birthday;
     private Integer level;
+    @JsonIgnore
     private String adminKey;
 
     public User(String name, String username, String password, String email, Integer birthday, Integer level) {
