@@ -1,23 +1,32 @@
-package project.linus.model;
+package project.linus.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
     private String name;
+
     private String username;
+
     private String password;
+
     private String email;
+
     private Integer birthday;
+
+    private String phoneNumber;
+
     private Integer level;
+
     @JsonIgnore
     private String adminKey;
 
-    public User(String name, String username, String password, String email, Integer birthday, Integer level) {
+    public User(String name, String username, String password, String email, Integer birthday, String phoneNumber, Integer level) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;
         this.birthday = birthday;
+        this.phoneNumber = phoneNumber;
         this.level = level;
     }
 
@@ -61,6 +70,14 @@ public class User {
         this.birthday = birthday;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public Integer getLevel() {
         return level;
     }
@@ -85,7 +102,9 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", birthday=" + birthday +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", level=" + level +
+                ", adminKey='" + adminKey + '\'' +
                 '}';
     }
 }
