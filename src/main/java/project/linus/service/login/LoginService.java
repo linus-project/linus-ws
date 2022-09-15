@@ -23,7 +23,7 @@ public class LoginService {
         for (User user : users) {
             if (user.getUsername().equals(login.getUsername())
                     && encoder.verify(login.getPassword(), user.getPassword())
-                    && user.getAdminKey().equals(login.getAdminKey())) {
+                    && user.adminKey().equals(login.getAdminKey())) {
                 loggedUser = user;
                 return user;
             }
