@@ -1,7 +1,7 @@
 package project.linus.model.login;
 
 public class AdminLogin extends Login {
-    private String adminKey = "";
+    private String adminKey;
 
     public AdminLogin(String username, String password, String adminKey) {
         super(username, password);

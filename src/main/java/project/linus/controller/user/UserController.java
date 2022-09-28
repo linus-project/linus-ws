@@ -20,8 +20,18 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<User>> listUsers() {
-        return ResponseEntity.ok(userService.listUsers());
+    public ResponseEntity<List<User>> listUsers(@RequestHeader String secretKey) {
+        if(secretKey.equals("grupo6")){
+            return ResponseEntity.ok(userService.listUsers());
+        }
+        return ResponseEntity.status(403).build();
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> countUsers(@RequestHeader String secretKey) {
+        if(secretKey.equals("grupo6")){
+            return ResponseEntity.ok(userService.countUsers());
+        }
+        return ResponseEntity.status(403).build();
+    }
 }

@@ -10,25 +10,18 @@ import project.linus.model.login.UserLogin;
 import project.linus.service.login.LoginService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/login")
 public class LoginController {
     @Autowired
     LoginService loginService;
-    @Autowired
-    UserController userController;
 
-    @PostMapping("/login")
+    @PostMapping("/user")
     public ResponseEntity<User> login(@RequestBody UserLogin login) {
-        return ResponseEntity.ok(loginService.login(login, userController));
+        return ResponseEntity.ok(loginService.login(login));
     }
 
     @PostMapping("/admin")
     public ResponseEntity<User> login(@RequestBody AdminLogin login) {
-        return ResponseEntity.ok(loginService.login(login, userController));
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<String> logout() {
-        return ResponseEntity.ok(loginService.logout());
+        return ResponseEntity.ok(loginService.login(login));
     }
 }

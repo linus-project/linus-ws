@@ -1,8 +1,8 @@
 package project.linus.model.login;
 
 public abstract class Login {
-    private String username = "";
-    private String password = "";
+    private String username;
+    private String password;
 
     public Login(String username, String password) {
         this.username = username;

@@ -1,31 +1,31 @@
 package project.linus.model.user;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "tb_user")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idUser;
     private String name;
 
     private String username;
 
-    private String password;
-
+    @Email
     private String email;
 
-    private Integer birthday;
+    private String password;
+
+    private LocalDate bornDate;
 
     private String phoneNumber;
 
-    private Integer level;
-
     private String adminKey;
 
-    public User(String name, String username, String password, String email, Integer birthday, String phoneNumber, Integer level) {
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.birthday = birthday;
-        this.phoneNumber = phoneNumber;
-        this.level = level;
-    }
+    private Integer fkLevel;
 
     public String getName() {
         return name;
@@ -59,12 +59,12 @@ public class User {
         this.email = email;
     }
 
-    public Integer getBirthday() {
-        return birthday;
+    public LocalDate getBirthday() {
+        return bornDate;
     }
 
-    public void setBirthday(Integer birthday) {
-        this.birthday = birthday;
+    public void setBirthday(LocalDate birthday) {
+        this.bornDate = birthday;
     }
 
     public String getPhoneNumber() {
@@ -76,11 +76,11 @@ public class User {
     }
 
     public Integer getLevel() {
-        return level;
+        return fkLevel;
     }
 
     public void setLevel(Integer level) {
-        this.level = level;
+        this.fkLevel = level;
     }
 
     public String adminKey() {
@@ -89,19 +89,5 @@ public class User {
 
     public void setAdminKey(String adminKey) {
         this.adminKey = adminKey;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", birthday=" + birthday +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", level=" + level +
-                ", adminKey='" + adminKey + '\'' +
-                '}';
     }
 }
