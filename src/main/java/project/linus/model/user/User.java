@@ -19,11 +19,15 @@ public class User {
 
     private String password;
 
+    private String genre;
+
     private LocalDate bornDate;
 
     private String phoneNumber;
 
     private String adminKey;
+
+    private String imageCode;
 
     private Integer fkLevel;
 
@@ -43,14 +47,6 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -59,12 +55,28 @@ public class User {
         this.email = email;
     }
 
-    public LocalDate getBirthday() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public LocalDate getBornDate() {
         return bornDate;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.bornDate = birthday;
+    public void setBornDate(LocalDate bornDate) {
+        this.bornDate = bornDate;
     }
 
     public String getPhoneNumber() {
@@ -75,12 +87,20 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Integer getLevel() {
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
+    }
+
+    public Integer getFkLevel() {
         return fkLevel;
     }
 
-    public void setLevel(Integer level) {
-        this.fkLevel = level;
+    public void setFkLevel(Integer fkLevel) {
+        this.fkLevel = fkLevel;
     }
 
     public String adminKey() {
