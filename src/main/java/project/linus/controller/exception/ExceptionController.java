@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import project.linus.model.exception.ExceptionMessage;
+import project.linus.util.exception.ContentException;
 import project.linus.util.exception.EmailException;
 import project.linus.util.exception.LoginException;
 import project.linus.util.exception.UsernameException;
@@ -31,5 +32,11 @@ public class ExceptionController {
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ExceptionMessage handleLoginException(){
         return new ExceptionMessage(403, "Forbidden", "Usuário ou senha incorretos!", new Date());
+    }
+
+    @ExceptionHandler(ContentException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ExceptionMessage handleContentException(){
+        return new ExceptionMessage(400, "Forbidden", "Esta postagem já existe!", new Date());
     }
 }
