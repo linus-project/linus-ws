@@ -2,11 +2,15 @@ package project.linus.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.linus.model.login.AdminLogin;
+import project.linus.model.login.UserLogin;
 import project.linus.model.user.User;
 import project.linus.repository.user.UserRepository;
 import project.linus.util.encoder.PasswordEncoder;
 import project.linus.util.exception.EmailException;
 import project.linus.util.exception.UsernameException;
+import project.linus.service.login.LoginService;
+
 import java.util.List;
 
 @Service
@@ -15,6 +19,8 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     PasswordEncoder encoder;
+    @Autowired
+    LoginService loginService;
 
     public User addUser(User user) {
         if (!verifyIfUserExists(user)) {
@@ -41,5 +47,26 @@ public class UserService {
 
     public Long countUsers() {
         return userRepository.count();
+    }
+
+    public User deleteUser(UserLogin login) {
+        User user = userRepository.findByUsername(login.getUsername());
+        userRepository.delete(loginService.login(login));
+        return user;
+    }
+
+    public User deleteUserAdmin(AdminLogin login) {
+        User user = userRepository.findByUsername(login.getUsername());
+        userRepository.delete(loginService.login(login));
+        return user;
+    }
+
+    public User changePassword(Integer id,User user) {
+        if (userRepository.existsById(id)){
+            user.setIdUser(id);
+            user.setPassword(encoder.encode(user.getPassword()));
+            userRepository.save(user);
+        }
+        return user;
     }
 }

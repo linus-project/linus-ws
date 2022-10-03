@@ -110,4 +110,8 @@ public class User {
     public void setAdminKey(String adminKey) {
         this.adminKey = adminKey;
     }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
+    }
 }

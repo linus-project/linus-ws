@@ -24,4 +24,5 @@ public class LoginController {
     public ResponseEntity<User> login(@RequestBody AdminLogin login) {
         return ResponseEntity.ok(loginService.login(login));
     }
+
 }
