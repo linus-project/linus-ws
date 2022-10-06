@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import project.linus.model.login.AdminLogin;
 import project.linus.model.login.UserLogin;
 import project.linus.model.user.User;
+import project.linus.model.user.manager.AdminPasswordManager;
+import project.linus.model.user.manager.UserPasswordManager;
 import project.linus.repository.user.UserRepository;
 import project.linus.service.user.UserService;
 
@@ -16,8 +18,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
-    @Autowired
-    UserRepository userRepository;
 
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User user){
@@ -40,19 +40,29 @@ public class UserController {
         return ResponseEntity.status(403).build();
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<User> deleteUser(@RequestBody UserLogin login) {
         return ResponseEntity.ok(userService.deleteUser(login));
     }
 
-    @DeleteMapping("/delete/admin")
+    @DeleteMapping("/admin")
     public ResponseEntity<User> deleteUserAdmin(@RequestBody AdminLogin login) {
         return ResponseEntity.ok(userService.deleteUserAdmin(login));
     }
 
-    @PutMapping("/put/{id}")
-    public ResponseEntity<User> changePassword(@PathVariable Integer id,@RequestBody User login){
-        return ResponseEntity.ok(userService.changePassword(id,login));
+//    @PutMapping("/{id}")
+//    public ResponseEntity<User> changeUser(@PathVariable Integer id,@RequestBody User user){
+//        return ResponseEntity.ok(userService.changeUser(id,user));
+//    }
+
+    @PutMapping
+    public ResponseEntity<User> changePassword(@RequestBody UserPasswordManager login){
+        return ResponseEntity.ok(userService.changePassword(login));
+    }
+
+    @PutMapping("/admin")
+    public ResponseEntity<User> changePasswordAdmin(@RequestBody AdminPasswordManager login){
+        return ResponseEntity.ok(userService.changePasswordAdmin(login));
     }
 
 }

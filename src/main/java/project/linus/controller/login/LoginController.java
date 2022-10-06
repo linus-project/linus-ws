@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.linus.controller.user.UserController;
-import project.linus.model.login.AdminLogin;
+import project.linus.model.login.*;
 import project.linus.model.user.User;
-import project.linus.model.login.UserLogin;
 import project.linus.service.login.LoginService;
 
 @RestController
@@ -15,14 +14,25 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @PostMapping("/user")
+    @PostMapping("/username")
     public ResponseEntity<User> login(@RequestBody UserLogin login) {
         return ResponseEntity.ok(loginService.login(login));
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/admin/username")
     public ResponseEntity<User> login(@RequestBody AdminLogin login) {
         return ResponseEntity.ok(loginService.login(login));
     }
+
+    @PostMapping("/email")
+    public ResponseEntity<User> login(@RequestBody UserLoginEmail login){
+        return ResponseEntity.ok(loginService.login(login));
+    }
+
+    @PostMapping("/admin/email")
+    public ResponseEntity<User> login(@RequestBody AdminLoginEmail login){
+        return ResponseEntity.ok(loginService.login(login));
+    }
+
 
 }

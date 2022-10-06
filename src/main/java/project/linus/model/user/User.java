@@ -111,7 +111,4 @@ public class User {
         this.adminKey = adminKey;
     }
 
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
-    }
 }
