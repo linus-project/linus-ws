@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import project.linus.model.login.AdminLogin;
 import project.linus.model.login.UserLogin;
 import project.linus.model.user.User;
-import project.linus.model.user.manager.AdminPasswordManager;
-import project.linus.model.user.manager.UserPasswordManager;
-import project.linus.repository.user.UserRepository;
+import project.linus.model.manager.AdminPasswordManager;
+import project.linus.model.manager.UserPasswordManager;
 import project.linus.service.user.UserService;
 
 import java.util.List;
@@ -49,11 +48,6 @@ public class UserController {
     public ResponseEntity<User> deleteUserAdmin(@RequestBody AdminLogin login) {
         return ResponseEntity.ok(userService.deleteUserAdmin(login));
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<User> changeUser(@PathVariable Integer id,@RequestBody User user){
-//        return ResponseEntity.ok(userService.changeUser(id,user));
-//    }
 
     @PutMapping
     public ResponseEntity<User> changePassword(@RequestBody UserPasswordManager login){

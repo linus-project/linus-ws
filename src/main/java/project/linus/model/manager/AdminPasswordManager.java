@@ -1,4 +1,4 @@
-package project.linus.model.user.manager;
+package project.linus.model.manager;
 
 public class AdminPasswordManager extends PasswordManager{
     private String adminKey;

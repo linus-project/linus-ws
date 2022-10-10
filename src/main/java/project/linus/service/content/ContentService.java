@@ -6,6 +6,7 @@ import project.linus.model.content.Content;
 import project.linus.repository.content.ContentRepository;
 import project.linus.util.exception.ContentException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,10 @@ public class ContentService {
 
     public Optional<Content> getContent(Integer idContent){
         return contentRepository.findById(idContent);
+    }
+
+    public List<Content> getContentByTitle(String contentTitle){
+        return contentRepository.findByContentTitleContains(contentTitle);
     }
 
     public Content createContent(Content content){

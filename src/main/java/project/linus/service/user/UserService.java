@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import project.linus.model.login.AdminLogin;
 import project.linus.model.login.UserLogin;
 import project.linus.model.user.User;
-import project.linus.model.user.manager.AdminPasswordManager;
-import project.linus.model.user.manager.UserPasswordManager;
+import project.linus.model.manager.AdminPasswordManager;
+import project.linus.model.manager.UserPasswordManager;
 import project.linus.repository.user.UserRepository;
 import project.linus.util.encoder.PasswordEncoder;
 import project.linus.util.exception.EmailException;
@@ -62,15 +62,6 @@ public class UserService {
         userRepository.delete(loginService.login(login));
         return user;
     }
-
-//    public User changeUser(Integer id,User user) {
-//        if (userRepository.existsById(id)){
-//            user.setIdUser(id);
-//            user.setPassword(encoder.encode(user.getPassword()));
-//            userRepository.save(user);
-//        }
-//        return user;
-//    }
 
     public User changePassword(UserPasswordManager login) {
         User user = userRepository.findByUsername(login.getUsername());
