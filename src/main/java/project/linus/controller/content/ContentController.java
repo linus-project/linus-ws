@@ -32,7 +32,7 @@ public class ContentController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<String> exportContent(
+    public ResponseEntity<ObjectList<Content>> exportContent(
             @RequestParam String fileTitle,
             @RequestParam String contentTitle,
             @RequestParam Integer listSize

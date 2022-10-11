@@ -1,12 +1,13 @@
 package project.linus.service.content;
 
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.linus.util.content.Content;
 import project.linus.repository.content.ContentRepository;
 import project.linus.util.exception.ContentException;
 import project.linus.util.generic.ObjectList;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Formatter;
@@ -19,6 +20,8 @@ public class ContentService {
 
     @Autowired
     ContentRepository contentRepository;
+
+    private final Logger logger = LoggerFactory.logger(ContentService.class);
 
     public Optional<Content> getContent(Integer idContent) {
         return contentRepository.findById(idContent);
@@ -36,7 +39,7 @@ public class ContentService {
         throw new ContentException();
     }
 
-    public String exportContent(String fileTitle, String contentTitle, Integer listSize) {
+    public ObjectList<Content> exportContent(String fileTitle, String contentTitle, Integer listSize) {
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".csv";
@@ -54,7 +57,7 @@ public class ContentService {
             file = new FileWriter(fileTitle);
             formatter = new Formatter(file);
         } catch (IOException error) {
-            System.out.println("[ERROR] - exportContent: " + error);
+            logger.info("[ERROR] - exportContent: " + error);
         }
 
         try {
@@ -70,16 +73,17 @@ public class ContentService {
                 );
             }
         } catch (FormatterClosedException error) {
-            System.out.println("[ERROR] - exportContent: " + error);
+            logger.info("[ERROR] - exportContent: " + error);
         } finally {
             formatter.close();
             try {
                 file.close();
             } catch (IOException error) {
-                System.out.println("[ERROR] - exportContent: " + error);
+                logger.info("[ERROR] - exportContent: " + error);
             }
         }
-        return "The file " + fileTitle + " has been exported successfully!";
+        logger.info("The file " + fileTitle + " has been exported successfully!");
+        return contentList;
     }
 
     public boolean verifyIfContentTitleExists(Content content) {
