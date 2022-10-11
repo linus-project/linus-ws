@@ -3,8 +3,10 @@ package project.linus.controller.content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.linus.model.content.Content;
+import project.linus.util.content.Content;
 import project.linus.service.content.ContentService;
+import project.linus.util.generic.ObjectList;
+
 import java.util.List;
 
 @RestController
@@ -15,18 +17,27 @@ public class ContentController {
     ContentService contentService;
 
     @GetMapping("/{idContent}")
-    public ResponseEntity<Content> getContent(@PathVariable Integer idContent){
+    public ResponseEntity<Content> getContent(@PathVariable Integer idContent) {
         return ResponseEntity.of(contentService.getContent(idContent));
     }
 
     @GetMapping
-    public ResponseEntity<List<Content>> getContentByTitle(@RequestParam(required = false) String contentTitle){
+    public ResponseEntity<List<Content>> getContentByTitle(@RequestParam(required = false) String contentTitle) {
         return ResponseEntity.ok(contentService.getContentByTitle(contentTitle));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Content> createContent(@RequestBody Content content){
+    public ResponseEntity<Content> createContent(@RequestBody Content content) {
         return ResponseEntity.ok(contentService.createContent(content));
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<String> exportContent(
+            @RequestParam String fileTitle,
+            @RequestParam String contentTitle,
+            @RequestParam Integer listSize
+    ) {
+        return ResponseEntity.ok(contentService.exportContent(fileTitle, contentTitle, listSize));
     }
 
 }
