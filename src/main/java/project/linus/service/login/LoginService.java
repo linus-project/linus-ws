@@ -20,29 +20,29 @@ public class LoginService {
 
     public User login(AdminLogin login) {
         User user = userRepository.findByUsername(login.getUsername());
+        if(user != null) {
+            boolean haveAdminKey = user.adminKey().equals(login.getAdminKey());
+            boolean usernameIsValid = user.getUsername().equals(login.getUsername());
+            boolean passwordIsValid = encoder.verify(login.getPassword(), user.getPassword());
 
-        boolean haveAdminKey = user.adminKey().equals(login.getAdminKey());
-        boolean usernameIsValid = user.getUsername().equals(login.getUsername());
-        boolean passwordIsValid = encoder.verify(login.getPassword(), user.getPassword());
-
-        if (haveAdminKey && usernameIsValid && passwordIsValid) {
-            return user;
+            if (haveAdminKey && usernameIsValid && passwordIsValid) {
+                return user;
+            }
         }
-
         throw new LoginException();
     }
 
     public User login(UserLogin login) {
         User user = userRepository.findByUsername(login.getUsername());
+        if(user != null) {
+            boolean haveAdminKey = user.adminKey() == null;
+            boolean usernameIsValid = user.getUsername().equals(login.getUsername());
+            boolean passwordIsValid = encoder.verify(login.getPassword(), user.getPassword());
 
-        boolean haveAdminKey = user.adminKey() == null;
-        boolean usernameIsValid = user.getUsername().equals(login.getUsername());
-        boolean passwordIsValid = encoder.verify(login.getPassword(), user.getPassword());
-
-        if (haveAdminKey && usernameIsValid && passwordIsValid) {
-            return user;
+            if (haveAdminKey && usernameIsValid && passwordIsValid) {
+                return user;
+            }
         }
-
         throw new LoginException();
     }
 

@@ -40,4 +40,11 @@ public class ContentController {
         return ResponseEntity.ok(contentService.exportContent(fileTitle, contentTitle, listSize));
     }
 
+    @PostMapping("/import")
+    public ResponseEntity<ObjectList<Content>> importContent(
+            @RequestBody ObjectList<Content> contentList
+    ) {
+        return ResponseEntity.ok(contentService.importContent(contentList));
+    }
+
 }

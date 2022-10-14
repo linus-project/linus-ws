@@ -8,6 +8,8 @@ import project.linus.util.content.Content;
 import project.linus.repository.content.ContentRepository;
 import project.linus.util.exception.ContentException;
 import project.linus.util.generic.ObjectList;
+
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Formatter;
@@ -83,6 +85,13 @@ public class ContentService {
             }
         }
         logger.info("The file " + fileTitle + " has been exported successfully!");
+        return contentList;
+    }
+
+    public ObjectList<Content> importContent(ObjectList<Content> contentList) {
+
+
+
         return contentList;
     }
 
