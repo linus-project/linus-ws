@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import project.linus.util.content.Content;
 import project.linus.service.content.ContentService;
 import project.linus.util.generic.ObjectList;
-
 import java.util.List;
 
 @RestController
@@ -39,12 +38,4 @@ public class ContentController {
     ) {
         return ResponseEntity.ok(contentService.exportContent(fileTitle, contentTitle, listSize));
     }
-
-    @PostMapping("/import")
-    public ResponseEntity<ObjectList<Content>> importContent(
-            @RequestBody ObjectList<Content> contentList
-    ) {
-        return ResponseEntity.ok(contentService.importContent(contentList));
-    }
-
 }

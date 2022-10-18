@@ -1,5 +1,7 @@
 package project.linus.util.generic;
 
+import project.linus.util.content.Content;
+
 public class ObjectList<T> {
     private T[] array;
 
@@ -56,6 +58,16 @@ public class ObjectList<T> {
             return null;
         }
         else {
+            return array[index];
+        }
+    }
+
+    public T setElement(T content, int index) {
+        if (index < 0 || index >= elementNumber) {
+            return null;
+        }
+        else {
+            array[index] = content;
             return array[index];
         }
     }

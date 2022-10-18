@@ -4,12 +4,11 @@ import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.linus.util.content.Content;
 import project.linus.repository.content.ContentRepository;
+import project.linus.util.content.Content;
 import project.linus.util.exception.ContentException;
 import project.linus.util.generic.ObjectList;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Formatter;
@@ -49,9 +48,9 @@ public class ContentService {
 
         int index = 0;
 
-        for (Content content : contentRepository.findByContentTitleContains(contentTitle)){
+        for (Content content : contentRepository.findByContentTitleContains(contentTitle)) {
             contentList.add(content);
-            if (index == listSize-1) break;
+            if (index == listSize - 1) break;
             index++;
         }
 
@@ -63,8 +62,9 @@ public class ContentService {
         }
 
         try {
+            contentList = bubbleSortByLevel(contentList);
             formatter.format("TITULO;CONTEUDO;DISTRO;NIVEL\n");
-            for(index = 0; index < contentList.getSize(); index++) {
+            for (index = 0; index < contentList.getSize(); index++) {
                 Content content = contentList.getElement(index);
                 formatter.format(
                         "%s;%s;%s;%s\n",
@@ -88,15 +88,24 @@ public class ContentService {
         return contentList;
     }
 
-    public ObjectList<Content> importContent(ObjectList<Content> contentList) {
-
-
-
-        return contentList;
-    }
-
     public boolean verifyIfContentTitleExists(Content content) {
         return contentRepository.findByContentTitle(content.getContentTitle()) == null;
+    }
+
+    public ObjectList<Content> bubbleSortByLevel(ObjectList<Content> contentList) {
+        for (int firstIndex = 0; firstIndex < contentList.getSize(); firstIndex++) {
+            for (int secondIndex = firstIndex + 1; secondIndex < contentList.getSize(); secondIndex++) {
+                if (
+                        contentList.getElement(firstIndex).getFkLevel() >
+                                contentList.getElement(secondIndex).getFkLevel()
+                ) {
+                    Content contentAux = contentList.getElement(firstIndex);
+                    contentList.setElement(contentList.getElement(secondIndex), firstIndex);
+                    contentList.setElement(contentAux, secondIndex);
+                }
+            }
+        }
+        return contentList;
     }
 
 }
