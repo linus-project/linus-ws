@@ -1,7 +1,5 @@
 package project.linus.util.generic;
 
-import project.linus.util.content.Content;
-
 public class ObjectList<T> {
     private T[] array;
 

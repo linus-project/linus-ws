@@ -1,6 +1,8 @@
-package project.linus.model.manager;
+package project.linus.model.user;
 
-public class AdminPasswordManager extends PasswordManager{
+import project.linus.model.user.PasswordManager;
+
+public class AdminPasswordManager extends PasswordManager {
     private String adminKey;
 
     public AdminPasswordManager(String username, String password, String newPassword, String adminKey) {

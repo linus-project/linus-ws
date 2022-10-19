@@ -3,9 +3,11 @@ package project.linus.controller.content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.linus.util.content.Content;
+import project.linus.model.content.Content;
+import project.linus.model.content.ContentManager;
 import project.linus.service.content.ContentService;
 import project.linus.util.generic.ObjectList;
+
 import java.util.List;
 
 @RestController
@@ -25,9 +27,19 @@ public class ContentController {
         return ResponseEntity.ok(contentService.getContentByTitle(contentTitle));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Content> createContent(@RequestBody Content content) {
-        return ResponseEntity.ok(contentService.createContent(content));
+    @PostMapping
+    public ResponseEntity<Content> createContent(@RequestBody ContentManager contentManager) {
+        return ResponseEntity.ok(contentService.createContent(contentManager));
+    }
+
+    @PutMapping
+    public ResponseEntity<Content> editContent(@RequestBody ContentManager contentManager) {
+        return ResponseEntity.ok(contentService.editContent(contentManager));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Content> deleteContent(@RequestBody ContentManager contentManager) {
+        return ResponseEntity.ok(contentService.deleteContent(contentManager));
     }
 
     @GetMapping("/export")

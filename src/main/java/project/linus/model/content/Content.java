@@ -1,4 +1,4 @@
-package project.linus.util.content;
+package project.linus.model.content;
 
 import javax.persistence.*;
 

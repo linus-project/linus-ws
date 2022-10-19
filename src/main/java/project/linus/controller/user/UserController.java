@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import project.linus.model.login.AdminLogin;
 import project.linus.model.login.UserLogin;
 import project.linus.model.user.User;
-import project.linus.model.manager.AdminPasswordManager;
-import project.linus.model.manager.UserPasswordManager;
+import project.linus.model.user.AdminPasswordManager;
+import project.linus.model.user.UserPasswordManager;
 import project.linus.service.user.UserService;
 
 import java.util.List;

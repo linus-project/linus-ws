@@ -4,9 +4,12 @@ import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.linus.model.content.Content;
+import project.linus.model.content.ContentManager;
+import project.linus.model.login.AdminLogin;
 import project.linus.repository.content.ContentRepository;
-import project.linus.util.content.Content;
-import project.linus.util.exception.ContentException;
+import project.linus.service.login.LoginService;
+import project.linus.util.exception.GenericException;
 import project.linus.util.generic.ObjectList;
 
 import java.io.FileWriter;
@@ -22,6 +25,9 @@ public class ContentService {
     @Autowired
     ContentRepository contentRepository;
 
+    @Autowired
+    LoginService loginService;
+
     private final Logger logger = LoggerFactory.logger(ContentService.class);
 
     public Optional<Content> getContent(Integer idContent) {
@@ -32,12 +38,74 @@ public class ContentService {
         return contentRepository.findByContentTitleContains(contentTitle);
     }
 
-    public Content createContent(Content content) {
-        if (verifyIfContentTitleExists(content)) {
+    public Content createContent(ContentManager contentManager) {
+        Content content = new Content();
+
+        AdminLogin admin = new AdminLogin(
+                contentManager.getUsername(),
+                contentManager.getPassword(),
+                contentManager.getAdminkey());
+
+        if (!verifyIfContentTitleExists(content.getContentTitle())) {
+            boolean isFkDistroValid = (contentManager.getFkDistro() == null || contentManager.getFkDistro() >= 1);
+            boolean isFkLevelValid = (contentManager.getFkLevel() >= 1 && contentManager.getFkLevel() <= 3);
+
+            if (isFkDistroValid && isFkLevelValid && loginService.login(admin) != null){
+                content.setContentTitle(contentManager.getContentTitle());
+                content.setContent(contentManager.getContentTitle());
+                content.setFkDistro(contentManager.getFkDistro());
+                content.setFkLevel(contentManager.getFkLevel());
+                contentRepository.save(content);
+                return content;
+            }
+        }
+        throw new GenericException();
+    }
+
+    public Content editContent(ContentManager contentManager) {
+        Content content = contentRepository.findByIdContent(contentManager.getIdContent());
+
+        AdminLogin admin = new AdminLogin(
+                contentManager.getUsername(),
+                contentManager.getPassword(),
+                contentManager.getAdminkey());
+
+        if (content != null && loginService.login(admin) != null) {
+            if (contentManager.getContentTitle() != null ||
+                    !contentManager.getContentTitle().equals("")) {
+                content.setContentTitle(contentManager.getContentTitle());
+            }
+            if (contentManager.getContent() != null ||
+                    !contentManager.getContent().equals("")
+            ) {
+                content.setContent(contentManager.getContent());
+            }
+            if (contentManager.getFkDistro() != 0) {
+                content.setFkDistro(contentManager.getFkDistro());
+            }
+            if (contentManager.getFkLevel() != null ||
+                    contentManager.getFkLevel() != 0) {
+                content.setFkLevel(contentManager.getFkLevel());
+            }
             contentRepository.save(content);
             return content;
         }
-        throw new ContentException();
+        throw new GenericException();
+    }
+
+    public Content deleteContent(ContentManager contentManager) {
+        Content content = contentRepository.findByIdContent(contentManager.getIdContent());
+
+        AdminLogin admin = new AdminLogin(
+                contentManager.getUsername(),
+                contentManager.getPassword(),
+                contentManager.getAdminkey());
+
+        if (content != null && loginService.login(admin) != null) {
+            contentRepository.delete(content);
+            return content;
+        }
+        throw new GenericException();
     }
 
     public ObjectList<Content> exportContent(String fileTitle, String contentTitle, Integer listSize) {
@@ -88,8 +156,8 @@ public class ContentService {
         return contentList;
     }
 
-    public boolean verifyIfContentTitleExists(Content content) {
-        return contentRepository.findByContentTitle(content.getContentTitle()) == null;
+    public boolean verifyIfContentTitleExists(String contentTitle) {
+        return contentRepository.findByContentTitle(contentTitle) != null;
     }
 
     public ObjectList<Content> bubbleSortByLevel(ObjectList<Content> contentList) {
