@@ -17,6 +17,10 @@ public class Content {
 
     private Integer fkLevel;
 
+    public Integer getIdContent() {
+        return idContent;
+    }
+
     public String getContentTitle() {
         return contentTitle;
     }

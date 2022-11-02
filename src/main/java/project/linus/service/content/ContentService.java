@@ -46,7 +46,7 @@ public class ContentService {
                 contentManager.getPassword(),
                 contentManager.getAdminkey());
 
-        if (!verifyIfContentTitleExists(content.getContentTitle())) {
+        if (!verifyIfContentTitleExists(contentManager.getContentTitle())) {
             boolean isFkDistroValid = (contentManager.getFkDistro() == null || contentManager.getFkDistro() >= 1);
             boolean isFkLevelValid = (contentManager.getFkLevel() >= 1 && contentManager.getFkLevel() <= 3);
 
