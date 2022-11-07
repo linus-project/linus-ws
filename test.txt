@@ -1,0 +1,4 @@
+00CONTEUDO2022207-11-2022 10:50:4601
+021    Como instalar o MySQL no UbuntLorem ipsum dolor amet bla bla bla bla bla bla    0301
+0251   Como instalar MySQL           Como instalar MySQL                               0301
+010000000002

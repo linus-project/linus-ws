@@ -14,6 +14,8 @@ import project.linus.util.generic.ObjectList;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.List;
@@ -50,7 +52,7 @@ public class ContentService {
             boolean isFkDistroValid = (contentManager.getFkDistro() == null || contentManager.getFkDistro() >= 1);
             boolean isFkLevelValid = (contentManager.getFkLevel() >= 1 && contentManager.getFkLevel() <= 3);
 
-            if (isFkDistroValid && isFkLevelValid && loginService.login(admin) != null){
+            if (isFkDistroValid && isFkLevelValid && loginService.login(admin) != null) {
                 content.setContentTitle(contentManager.getContentTitle());
                 content.setContent(contentManager.getContentTitle());
                 content.setFkDistro(contentManager.getFkDistro());
@@ -111,7 +113,7 @@ public class ContentService {
     public ObjectList<Content> exportContent(String fileTitle, String contentTitle, Integer listSize) {
         FileWriter file = null;
         Formatter formatter = null;
-        fileTitle += ".csv";
+        fileTitle += ".txt";
         ObjectList<Content> contentList = new ObjectList(listSize);
 
         int index = 0;
@@ -131,17 +133,29 @@ public class ContentService {
 
         try {
             contentList = bubbleSortByLevel(contentList);
-            formatter.format("TITULO;CONTEUDO;DISTRO;NIVEL\n");
+
+            String header = "00CONTEUDO20222";
+            header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+            header += "01";
+            formatter.format(header + "\n");
+
+            String corpo;
             for (index = 0; index < contentList.getSize(); index++) {
                 Content content = contentList.getElement(index);
-                formatter.format(
-                        "%s;%s;%s;%s\n",
-                        content.getContentTitle(),
-                        content.getContent(),
-                        content.getFkDistro(),
-                        content.getFkLevel()
-                );
+                corpo = "02";
+                corpo += String.format("%-5.5s", content.getIdContent());
+                corpo += String.format("%-30.30s", content.getContentTitle());
+                corpo += String.format("%-50.50s", content.getContent());
+//                corpo += String.format("%-20.20s", content.
+                corpo += String.format("%02d", content.getFkDistro());
+                corpo += String.format("%02d", content.getFkLevel());
+                formatter.format(corpo + "\n");
             }
+
+            String trailer = "01";
+            trailer += String.format("%010d", index);
+            formatter.format(trailer + "\n");
+
         } catch (FormatterClosedException error) {
             logger.info("[ERROR] - exportContent: " + error);
         } finally {
