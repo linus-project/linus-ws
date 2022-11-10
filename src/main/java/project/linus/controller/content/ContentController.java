@@ -27,6 +27,11 @@ public class ContentController {
         return ResponseEntity.ok(contentService.getContentByTitle(contentTitle));
     }
 
+    @GetMapping("/level/{level}")
+    public ResponseEntity<List<Content>> getContentByLevel(@PathVariable Integer level) {
+        return ResponseEntity.ok(contentService.getContentByLevel(level));
+    }
+
     @PostMapping
     public ResponseEntity<Content> createContent(@RequestBody ContentManager contentManager) {
         return ResponseEntity.ok(contentService.createContent(contentManager));

@@ -35,7 +35,14 @@ public class ContentService {
     }
 
     public List<Content> getContentByTitle(String contentTitle) {
+        if (contentTitle == null || contentTitle.equals("")){
+            return contentRepository.findAll();
+        }
         return contentRepository.findByContentTitleContains(contentTitle);
+    }
+
+    public List<Content> getContentByLevel(Integer level) {
+        return contentRepository.findByFkLevel(level);
     }
 
     public Content createContent(ContentManager contentManager) {

@@ -11,4 +11,5 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
     Content findByIdContent(Integer idContent);
     Content findByContentTitle(String contentTitle);
     List<Content> findByContentTitleContains(String contentTitle);
+    List<Content> findByFkLevel(Integer level);
 }
