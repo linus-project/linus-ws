@@ -47,12 +47,21 @@ public class ContentController {
         return ResponseEntity.ok(contentService.deleteContent(contentManager));
     }
 
-    @GetMapping("/export")
+    @GetMapping("/export/csv")
     public ResponseEntity<ObjectList<Content>> exportContent(
             @RequestParam String fileTitle,
             @RequestParam String contentTitle,
             @RequestParam Integer listSize
     ) {
-        return ResponseEntity.ok(contentService.exportContent(fileTitle, contentTitle, listSize));
+        return ResponseEntity.ok(contentService.exportContentCsv(fileTitle, contentTitle, listSize));
+    }
+
+    @GetMapping("/export/txt")
+    public ResponseEntity<ObjectList<Content>> exportContentTxt(
+            @RequestParam String fileTitle,
+            @RequestParam String contentTitle,
+            @RequestParam Integer listSize
+    ) {
+        return ResponseEntity.ok(contentService.exportContentTxt(fileTitle, contentTitle, listSize));
     }
 }

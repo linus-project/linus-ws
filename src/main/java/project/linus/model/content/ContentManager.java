@@ -1,6 +1,9 @@
 package project.linus.model.content;
 
+import org.hibernate.annotations.CreationTimestamp;
 import project.linus.util.manager.Manager;
+
+import java.time.LocalDateTime;
 
 public class ContentManager extends Manager {
     private String adminkey;
@@ -67,4 +70,5 @@ public class ContentManager extends Manager {
     public void setFkDistro(Integer fkDistro) {
         this.fkDistro = fkDistro;
     }
+
 }

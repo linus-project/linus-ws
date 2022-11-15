@@ -31,6 +31,14 @@ public class User {
 
     private Integer fkLevel;
 
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
+    }
+
     public String getName() {
         return name;
     }
