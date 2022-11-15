@@ -52,4 +52,5 @@ public class Content {
     public void setFkLevel(Integer fkLevel) {
         this.fkLevel = fkLevel;
     }
+
 }

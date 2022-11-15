@@ -14,6 +14,8 @@ import project.linus.util.generic.ObjectList;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.List;
@@ -115,7 +117,7 @@ public class ContentService {
         throw new GenericException();
     }
 
-    public ObjectList<Content> exportContent(String fileTitle, String contentTitle, Integer listSize) {
+    public ObjectList<Content> exportContentCsv(String fileTitle, String contentTitle, Integer listSize) {
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".csv";
@@ -149,6 +151,65 @@ public class ContentService {
                         content.getFkLevel()
                 );
             }
+        } catch (FormatterClosedException error) {
+            logger.info("[ERROR] - exportContent: " + error);
+        } finally {
+            formatter.close();
+            try {
+                file.close();
+            } catch (IOException error) {
+                logger.info("[ERROR] - exportContent: " + error);
+            }
+        }
+        logger.info("The file " + fileTitle + " has been exported successfully!");
+        return contentList;
+    }
+
+    public ObjectList<Content> exportContentTxt(String fileTitle, String contentTitle, Integer listSize) {
+        FileWriter file = null;
+        Formatter formatter = null;
+        fileTitle += ".txt";
+        ObjectList<Content> contentList = new ObjectList(listSize);
+
+        int index = 0;
+
+        for (Content content : contentRepository.findByContentTitleContains(contentTitle)) {
+            contentList.add(content);
+            if (index == listSize - 1) break;
+            index++;
+        }
+
+        try {
+            file = new FileWriter(fileTitle);
+            formatter = new Formatter(file);
+        } catch (IOException error) {
+            logger.info("[ERROR] - exportContent: " + error);
+        }
+
+        try {
+            contentList = bubbleSortByLevel(contentList);
+
+            String header = "00CONTEUDO20222";
+            header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+            header += "01";
+            formatter.format(header + "\n");
+
+            String body;
+            for (index = 0; index < contentList.getSize(); index++) {
+                Content content = contentList.getElement(index);
+                body = "02";
+                body += String.format("%-5.5s", content.getIdContent());
+                body += String.format("%-30.30s", content.getContentTitle());
+                body += String.format("%-50.50s", content.getContent());
+                body += String.format("%02d", content.getFkDistro());
+                body += String.format("%02d", content.getFkLevel());
+                formatter.format(body + "\n");
+            }
+
+            String trailer = "01";
+            trailer += String.format("%010d", index);
+            formatter.format(trailer + "\n");
+
         } catch (FormatterClosedException error) {
             logger.info("[ERROR] - exportContent: " + error);
         } finally {

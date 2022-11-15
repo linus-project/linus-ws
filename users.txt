@@ -1,0 +1,16 @@
+00USUARIO2022215-11-2022 00:59:4001
+031    Gabriel Aguiar      gabriel.aguiar      gabriel.aguiar@gmail.com           M     2002-09-29  123123      03
+032    mariana             mariana.cazzoto     mariana.cazzoto@bandtec.com.br     F     2002-07-12  11969985498 01
+033    teste               teste               teste.teste@bandtec.com.br         F     2002-07-12  11969985498 01
+038    mariana domingos    mariana.domingos    mariana.domingos@gmail.com         F     2022-09-29  string      01
+039    Alex Barreira       alex.barreira       alex.barreira@gmail.com            M     1990-09-30  95123456    03
+0320   maria               maria.maria         maria@gmail.com                    F     2022-10-03  string      01
+0322   Eduardo Cardoso     eduardo.cardoso     eduardo.cardoso@sptech.com.br      H     2002-10-09  45678910    02
+0323   Raquel Oliveira     raquel.oliveira     raquel.oliveira@hotmail.com        F     2002-10-10  9876526     01
+0325   Natacha Batista     natacha.batista     natacha.batista@gmail.com          null  null                    01
+0326   admin               admin               admin@linus.com                    null  null        null        03
+0327   teste               teste.teste         teste@teste.com                    null  null                    01
+0329   may                 may                 may@mama.com                       null  null                    01
+0330   testando            testando.u          testando@gmail.com                 null  null                    01
+0332   marianadomingos     mariana.test        mariana@gmail.com                  F     2022-11-06  string      01
+010000000014
