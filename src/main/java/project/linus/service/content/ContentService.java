@@ -16,10 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
-import java.util.FormatterClosedException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ContentService {
@@ -37,14 +34,15 @@ public class ContentService {
     }
 
     public List<Content> getContentByTitle(String contentTitle) {
-        if (contentTitle == null || contentTitle.equals("")){
-            return contentRepository.findAll();
-        }
         return contentRepository.findByContentTitleContains(contentTitle);
     }
 
     public List<Content> getContentByLevel(Integer level) {
         return contentRepository.findByFkLevel(level);
+    }
+
+    public List<Content> getContentByFkDistro(Integer fkDistro) {
+        return contentRepository.findByFkDistro(fkDistro);
     }
 
     public Content createContent(ContentManager contentManager) {
