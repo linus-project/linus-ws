@@ -18,6 +18,7 @@ import project.linus.util.exception.UsernameException;
 import project.linus.service.login.LoginService;
 import project.linus.util.generic.ObjectList;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class UserService {
     PasswordEncoder encoder;
     @Autowired
     LoginService loginService;
+    private final String exportUrl = "~/Documents/git-projects/linus-ws/target/";
 
     private final Logger logger = LoggerFactory.logger(ContentService.class);
 
@@ -90,11 +92,11 @@ public class UserService {
         return user;
     }
 
-    public ObjectList<User> exportUsers(Integer listSize) {
+    public String exportUsers(Integer listSize, String fileTitle) {
 
         FileWriter file = null;
         Formatter formatter = null;
-        String fileTitle = "users.txt";
+        fileTitle += ".txt";
 
         ObjectList<User> userList = new ObjectList(listSize);
 
@@ -107,7 +109,7 @@ public class UserService {
         }
 
         try {
-            file = new FileWriter(fileTitle);
+            file = new FileWriter(new File(fileTitle));
             formatter = new Formatter(file);
         } catch (IOException error) {
             logger.info("[ERROR] - exportUser: " + error);
@@ -149,6 +151,6 @@ public class UserService {
             }
         }
         logger.info("The file " + fileTitle + " has been exported successfully!");
-        return userList;
+        return exportUrl + fileTitle;
     }
 }

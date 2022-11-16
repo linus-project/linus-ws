@@ -62,8 +62,8 @@ public class UserController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<ObjectList<User>> exportUsers(@RequestParam Integer listSize) {
-        return ResponseEntity.ok(userService.exportUsers(listSize));
+    public ResponseEntity<String> exportUsers(@RequestParam Integer listSize, @RequestParam String fileTitle) {
+        return ResponseEntity.ok(userService.exportUsers(listSize, fileTitle));
     }
 
 }

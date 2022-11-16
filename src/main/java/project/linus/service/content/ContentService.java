@@ -27,6 +27,8 @@ public class ContentService {
     @Autowired
     LoginService loginService;
 
+    private final String exportUrl = "~/Documents/git-projects/linus-ws/target/";
+
     private final Logger logger = LoggerFactory.logger(ContentService.class);
 
     public Optional<Content> getContent(Integer idContent) {
@@ -115,7 +117,7 @@ public class ContentService {
         throw new GenericException();
     }
 
-    public ObjectList<Content> exportContentCsv(String fileTitle, String contentTitle, Integer listSize) {
+    public String exportContentCsv(String fileTitle, String contentTitle, Integer listSize) {
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".csv";
@@ -160,10 +162,10 @@ public class ContentService {
             }
         }
         logger.info("The file " + fileTitle + " has been exported successfully!");
-        return contentList;
+        return exportUrl + fileTitle;
     }
 
-    public ObjectList<Content> exportContentTxt(String fileTitle, String contentTitle, Integer listSize) {
+    public String exportContentTxt(String fileTitle, String contentTitle, Integer listSize) {
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".txt";
@@ -219,7 +221,7 @@ public class ContentService {
             }
         }
         logger.info("The file " + fileTitle + " has been exported successfully!");
-        return contentList;
+        return exportUrl + fileTitle;
     }
 
     public boolean verifyIfContentTitleExists(String contentTitle) {

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import project.linus.model.content.Content;
 import project.linus.model.content.ContentManager;
 import project.linus.service.content.ContentService;
-import project.linus.util.generic.ObjectList;
 
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class ContentController {
     }
 
     @GetMapping("/export/csv")
-    public ResponseEntity<ObjectList<Content>> exportContent(
+    public ResponseEntity<String> exportContent(
             @RequestParam String fileTitle,
             @RequestParam String contentTitle,
             @RequestParam Integer listSize
@@ -62,7 +61,7 @@ public class ContentController {
     }
 
     @GetMapping("/export/txt")
-    public ResponseEntity<ObjectList<Content>> exportContentTxt(
+    public ResponseEntity<String> exportContentTxt(
             @RequestParam String fileTitle,
             @RequestParam String contentTitle,
             @RequestParam Integer listSize
