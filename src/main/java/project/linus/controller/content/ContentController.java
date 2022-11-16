@@ -32,6 +32,11 @@ public class ContentController {
         return ResponseEntity.ok(contentService.getContentByLevel(level));
     }
 
+    @GetMapping("/distro/{distro}")
+    public ResponseEntity<List<Content>> getContentByFkDistro(@PathVariable Integer fkDistro) {
+        return ResponseEntity.ok(contentService.getContentByFkDistro(fkDistro));
+    }
+
     @PostMapping
     public ResponseEntity<Content> createContent(@RequestBody ContentManager contentManager) {
         return ResponseEntity.ok(contentService.createContent(contentManager));
