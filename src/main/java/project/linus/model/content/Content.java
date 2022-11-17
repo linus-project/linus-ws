@@ -17,6 +17,17 @@ public class Content {
 
     private Integer fkLevel;
 
+    public Content() {
+    }
+
+    public Content(Integer idContent, String contentTitle, String content, Integer fkDistro, Integer fkLevel) {
+        this.idContent = idContent;
+        this.contentTitle = contentTitle;
+        this.content = content;
+        this.fkDistro = fkDistro;
+        this.fkLevel = fkLevel;
+    }
+
     public Integer getIdContent() {
         return idContent;
     }
