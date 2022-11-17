@@ -12,6 +12,8 @@ import project.linus.service.login.LoginService;
 import project.linus.util.exception.GenericException;
 import project.linus.util.generic.ObjectList;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -242,6 +244,74 @@ public class ContentService {
             }
         }
         return contentList;
+    }
+
+    public Content importContentTxt(String fileTitle) {
+
+        BufferedReader input = null;
+
+        String registry, registryType, contentTitle, content;
+        Integer id, distro, level;
+        int contaRegDadoLido = 0;
+        Integer qtdRegDadoGravado;
+
+        List<Content> contentList = new ArrayList();
+
+        try {
+            input = new BufferedReader(new FileReader(fileTitle));
+        } catch (IOException error) {
+            logger.info("[ERROR] - Error opening file: " + error);
+        }
+
+        try {
+            registry = input.readLine();
+
+            while (registry != null) {
+                registryType = registry.substring(0, 2);
+                if (registryType.equals("00")) {
+                    System.out.println("Header Registry");
+                    System.out.println("File Type: " + registry.substring(2, 6));
+                    System.out.println("Year and Semester: " + registry.substring(6, 11));
+                    System.out.println("Recording Date and Time: " + registry.substring(11, 30));
+                    System.out.println("Document Version: " + registry.substring(30, 32));
+                } else if (registryType.equals("01")) {
+                    System.out.println("Trailer Registration");
+                    qtdRegDadoGravado = Integer.valueOf(registry.substring(2, 12));
+                    if (contaRegDadoLido == qtdRegDadoGravado) {
+                        logger.info("Number of records read is compatible with number of records written");
+                    } else {
+                        logger.info("Number of records read is not compatible with number of records written");
+                    }
+                } else if (registryType.equals("02")) {
+                    System.out.println("Corporation Registration");
+                    id = Integer.valueOf(registry.substring(2, 4));
+                    contentTitle = registry.substring(4, 12).trim();
+                    content = registry.substring(12, 62).trim();
+                    distro = Integer.valueOf(registry.substring(62, 63));
+                    level = Integer.valueOf(registry.substring(63, 64));
+
+                    contaRegDadoLido++;
+
+                    Content newContent = new Content(id, contentTitle, content, distro, level);
+                    contentRepository.save(newContent);
+                    return newContent;
+
+                } else {
+                    logger.info("[ERROR] - Invalid record type! ");
+                }
+
+                registry = input.readLine();
+            }
+            input.close();
+        } catch (IOException error) {
+            logger.info("[ERROR] - Error reading file: " + error);
+        }
+
+//        System.out.println("\nConteúdo da lista lida do arquivo");
+//        for (Content c : contentList) {
+//            System.out.println(c);
+//        }
+        return null;
     }
 
 }

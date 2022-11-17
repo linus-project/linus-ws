@@ -68,4 +68,10 @@ public class ContentController {
     ) {
         return ResponseEntity.ok(contentService.exportContentTxt(fileTitle, contentTitle, listSize));
     }
+
+    @PostMapping("/import")
+    public ResponseEntity<Content> importContent(@RequestParam String fileTitle){
+        fileTitle += ".txt";
+        return ResponseEntity.ok(contentService.importContentTxt(fileTitle));
+    }
 }
