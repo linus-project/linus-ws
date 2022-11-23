@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.linus.model.content.Content;
 import project.linus.model.content.ContentManager;
+import project.linus.model.content.UserFavoriteContent;
 import project.linus.service.content.ContentService;
 
 import java.util.List;
@@ -49,6 +50,16 @@ public class ContentController {
     @DeleteMapping
     public ResponseEntity<Content> deleteContent(@RequestBody ContentManager contentManager) {
         return ResponseEntity.ok(contentService.deleteContent(contentManager));
+    }
+
+    @GetMapping("/favorite")
+    public ResponseEntity<List<Content>> getFavoriteContentByLevel(@RequestParam Integer idUser, @RequestParam Integer level) {
+        return ResponseEntity.ok(contentService.getFavoriteContentByLevel(idUser, level));
+    }
+
+    @PostMapping("/favorite")
+    public ResponseEntity<Content> favoriteContent(@RequestBody UserFavoriteContent userFavoriteContent) {
+        return ResponseEntity.ok(contentService.favoriteContent(userFavoriteContent));
     }
 
     @GetMapping("/export/csv")
