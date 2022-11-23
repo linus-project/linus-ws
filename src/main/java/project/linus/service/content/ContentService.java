@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.linus.model.content.Content;
 import project.linus.model.content.ContentManager;
+import project.linus.model.content.UserFavoriteContent;
 import project.linus.model.login.AdminLogin;
 import project.linus.repository.content.ContentRepository;
+import project.linus.repository.content.UserFavoriteContentRepository;
+import project.linus.repository.user.UserRepository;
 import project.linus.service.login.LoginService;
 import project.linus.util.exception.GenericException;
 import project.linus.util.generic.ObjectList;
@@ -27,9 +30,15 @@ public class ContentService {
     ContentRepository contentRepository;
 
     @Autowired
+    UserFavoriteContentRepository userFavoriteContentRepository;
+
+    @Autowired
     LoginService loginService;
 
-    private final String exportUrl = "~/Documents/git-projects/linus-ws/target/";
+    @Autowired
+    UserRepository userRepository;
+
+    private String exportUrl = "~/Documents/git-projects/linus-ws/target/";
 
     private final Logger logger = LoggerFactory.logger(ContentService.class);
 
@@ -61,7 +70,7 @@ public class ContentService {
             boolean isFkDistroValid = (contentManager.getFkDistro() == null || contentManager.getFkDistro() >= 1);
             boolean isFkLevelValid = (contentManager.getFkLevel() >= 1 && contentManager.getFkLevel() <= 3);
 
-            if (isFkDistroValid && isFkLevelValid && loginService.login(admin) != null){
+            if (isFkDistroValid && isFkLevelValid && loginService.login(admin) != null) {
                 content.setContentTitle(contentManager.getContentTitle());
                 content.setContent(contentManager.getContentTitle());
                 content.setFkDistro(contentManager.getFkDistro());
@@ -114,6 +123,39 @@ public class ContentService {
 
         if (content != null && loginService.login(admin) != null) {
             contentRepository.delete(content);
+            return content;
+        }
+        throw new GenericException();
+    }
+
+    public List<Content> getFavoriteContentByLevel(Integer idUser, Integer level) {
+        List<UserFavoriteContent> userFavoriteContentList = userFavoriteContentRepository.findByContentLevel(level);
+        List<Content> contentList = new ArrayList<>();
+        for (UserFavoriteContent favoriteContent : userFavoriteContentList) {
+            contentList.add(contentRepository.findByIdContent(favoriteContent.getFkContent()));
+        }
+        return contentList;
+    }
+
+    public Content favoriteContent(UserFavoriteContent userFavoriteContent) {
+        Content content = contentRepository.findByIdContent(userFavoriteContent.getFkContent());
+        boolean login = userRepository.findByIdUser(userFavoriteContent.getFkUser()).isPresent();
+
+        if (content != null && login) {
+            boolean isFavorited = userFavoriteContentRepository.findByFkUserAndFkContent(
+                    userFavoriteContent.getFkUser(),
+                    userFavoriteContent.getFkContent()
+            ).isPresent();
+            if(isFavorited) {
+                UserFavoriteContent userFavoritedContent = userFavoriteContentRepository.findByFkUserAndFkContent(
+                        userFavoriteContent.getFkUser(),
+                        userFavoriteContent.getFkContent()
+                ).get();
+                userFavoriteContentRepository.delete(userFavoritedContent);
+            } else {
+                userFavoriteContent.setContentLevel(content.getFkLevel());
+                userFavoriteContentRepository.save(userFavoriteContent);
+            }
             return content;
         }
         throw new GenericException();
