@@ -32,9 +32,12 @@ public class ContentController {
         return ResponseEntity.ok(contentService.getContentByLevel(level));
     }
 
-    @GetMapping("/distro")
-    public ResponseEntity<List<Content>> getContentByFkDistro(@PathVariable Integer fkDistro) {
-        return ResponseEntity.ok(contentService.getContentByFkDistro(fkDistro));
+    @GetMapping("/distro/{distro}/level/{level}")
+    public ResponseEntity<List<Content>> getContentByFkDistroAndFkLevel(
+            @PathVariable Integer distro,
+            @PathVariable Integer level
+    ) {
+        return ResponseEntity.ok(contentService.getContentByFkDistroAndFkLevel(distro, level));
     }
 
     @PostMapping
@@ -81,7 +84,7 @@ public class ContentController {
     }
 
     @PostMapping("/import")
-    public ResponseEntity<Content> importContent(@RequestParam String fileTitle){
+    public ResponseEntity<Content> importContent(@RequestParam String fileTitle) {
         fileTitle += ".txt";
         return ResponseEntity.ok(contentService.importContentTxt(fileTitle));
     }
