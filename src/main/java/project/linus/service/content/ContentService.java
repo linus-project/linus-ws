@@ -54,8 +54,8 @@ public class ContentService {
         return contentRepository.findByFkLevel(level);
     }
 
-    public List<Content> getContentByFkDistro(Integer fkDistro) {
-        return contentRepository.findByFkDistro(fkDistro);
+    public List<Content> getContentByFkDistroAndFkLevel(Integer fkDistro, Integer level) {
+        return contentRepository.findByFkDistroAndFkLevel(fkDistro, level);
     }
 
     public Content createContent(ContentManager contentManager) {
