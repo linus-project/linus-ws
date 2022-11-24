@@ -31,6 +31,8 @@ public class User {
 
     private Integer fkLevel;
 
+    private Integer isBlocked;
+
     public Integer getIdUser() {
         return idUser;
     }
@@ -119,4 +121,15 @@ public class User {
         this.adminKey = adminKey;
     }
 
+    public String getAdminKey() {
+        return adminKey;
+    }
+
+    public Integer getIsBlocked() {
+        return isBlocked;
+    }
+
+    public void setIsBlocked(Integer isBlocked) {
+        this.isBlocked = isBlocked;
+    }
 }

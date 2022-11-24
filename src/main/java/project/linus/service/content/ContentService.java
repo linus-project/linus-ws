@@ -72,7 +72,7 @@ public class ContentService {
 
             if (isFkDistroValid && isFkLevelValid && loginService.login(admin) != null) {
                 content.setContentTitle(contentManager.getContentTitle());
-                content.setContent(contentManager.getContentTitle());
+                content.setContent(contentManager.getContent());
                 content.setFkDistro(contentManager.getFkDistro());
                 content.setFkLevel(contentManager.getFkLevel());
                 contentRepository.save(content);
