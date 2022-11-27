@@ -31,6 +31,21 @@ public class User {
 
     private Integer fkLevel;
 
+    private Integer isBlocked;
+
+    public User() {
+    }
+
+    public User(Integer idUser, String name, String username, String email, String genre, String phoneNumber, Integer fkLevel) {
+        this.idUser = idUser;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.genre = genre;
+        this.phoneNumber = phoneNumber;
+        this.fkLevel = fkLevel;
+    }
+
     public Integer getIdUser() {
         return idUser;
     }
@@ -119,4 +134,15 @@ public class User {
         this.adminKey = adminKey;
     }
 
+    public String getAdminKey() {
+        return adminKey;
+    }
+
+    public Integer getIsBlocked() {
+        return isBlocked;
+    }
+
+    public void setIsBlocked(Integer isBlocked) {
+        this.isBlocked = isBlocked;
+    }
 }
