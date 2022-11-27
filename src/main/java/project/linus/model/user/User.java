@@ -39,10 +39,6 @@ public class User {
 
     private Integer isBlocked;
 
-    @OneToMany (orphanRemoval = true)
-    @JsonManagedReference
-    private Set<News> news = new HashSet<>();
-
     public User() {
     }
 
@@ -154,13 +150,5 @@ public class User {
 
     public void setIsBlocked(Integer isBlocked) {
         this.isBlocked = isBlocked;
-    }
-
-    public Set<News> getNews() {
-        return news;
-    }
-
-    public void setNews(Set<News> news) {
-        this.news = news;
     }
 }
