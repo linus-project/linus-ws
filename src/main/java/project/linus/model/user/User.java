@@ -1,8 +1,14 @@
 package project.linus.model.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import project.linus.model.news.News;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
@@ -32,6 +38,23 @@ public class User {
     private Integer fkLevel;
 
     private Integer isBlocked;
+
+    @OneToMany (orphanRemoval = true)
+    @JsonManagedReference
+    private Set<News> news = new HashSet<>();
+
+    public User() {
+    }
+
+    public User(Integer idUser, String name, String username, String email, String genre, String phoneNumber, Integer fkLevel) {
+        this.idUser = idUser;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.genre = genre;
+        this.phoneNumber = phoneNumber;
+        this.fkLevel = fkLevel;
+    }
 
     public Integer getIdUser() {
         return idUser;
@@ -131,5 +154,13 @@ public class User {
 
     public void setIsBlocked(Integer isBlocked) {
         this.isBlocked = isBlocked;
+    }
+
+    public Set<News> getNews() {
+        return news;
+    }
+
+    public void setNews(Set<News> news) {
+        this.news = news;
     }
 }
