@@ -1,11 +1,13 @@
 package project.linus.model.news;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import project.linus.model.login.AdminLogin;
 import project.linus.model.user.User;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity(name = "tb_news")
@@ -18,11 +20,13 @@ public class News {
     private String newsTitle;
 
     private String news;
-
+    
     @ManyToOne
     @JoinColumn(name = "fk_user")
     @JsonBackReference
     private User fkUser;
+
+    private LocalDateTime insertDate;
 
     public News() {
 
@@ -65,5 +69,9 @@ public class News {
 
     public void setFkUser(User fkUser) {
         this.fkUser = fkUser;
+    }
+    
+    public LocalDateTime getInsertDate() {
+        return insertDate;
     }
 }

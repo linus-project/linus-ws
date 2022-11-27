@@ -12,6 +12,6 @@ public interface UserFavoriteContentRepository extends JpaRepository<UserFavorit
 
     Optional<UserFavoriteContent> findByFkUserAndFkContent(Integer fkUser, Integer fkContent);
 
-    List<UserFavoriteContent> findByContentLevel(Integer contentLevel);
+    List<UserFavoriteContent> findByFkUserAndContentLevel(Integer fkUser, Integer contentLevel);
 
 }

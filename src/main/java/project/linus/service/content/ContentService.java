@@ -125,8 +125,12 @@ public class ContentService {
         throw new GenericException();
     }
 
+    public Boolean getFavoriteContent(Integer idUser, Integer idContent) {
+        return userFavoriteContentRepository.findByFkUserAndFkContent(idUser, idContent).isPresent();
+    }
+
     public List<Content> getFavoriteContentByLevel(Integer idUser, Integer level) {
-        List<UserFavoriteContent> userFavoriteContentList = userFavoriteContentRepository.findByContentLevel(level);
+        List<UserFavoriteContent> userFavoriteContentList = userFavoriteContentRepository.findByFkUserAndContentLevel(idUser, level);
         List<Content> contentList = new ArrayList<>();
         for (UserFavoriteContent favoriteContent : userFavoriteContentList) {
             contentList.add(contentRepository.findByIdContent(favoriteContent.getFkContent()));

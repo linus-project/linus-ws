@@ -56,6 +56,11 @@ public class ContentController {
     }
 
     @GetMapping("/favorite")
+    public ResponseEntity<Boolean> getFavoriteContent(@RequestParam Integer idUser, @RequestParam Integer idContent) {
+        return ResponseEntity.ok(contentService.getFavoriteContent(idUser, idContent));
+    }
+
+    @GetMapping("/favorite/level")
     public ResponseEntity<List<Content>> getFavoriteContentByLevel(@RequestParam Integer idUser, @RequestParam Integer level) {
         return ResponseEntity.ok(contentService.getFavoriteContentByLevel(idUser, level));
     }
