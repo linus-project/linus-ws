@@ -15,10 +15,7 @@ import project.linus.service.login.LoginService;
 import project.linus.util.exception.GenericException;
 import project.linus.util.generic.ObjectList;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -146,7 +143,7 @@ public class ContentService {
                     userFavoriteContent.getFkUser(),
                     userFavoriteContent.getFkContent()
             ).isPresent();
-            if(isFavorited) {
+            if (isFavorited) {
                 UserFavoriteContent userFavoritedContent = userFavoriteContentRepository.findByFkUserAndFkContent(
                         userFavoriteContent.getFkUser(),
                         userFavoriteContent.getFkContent()
@@ -288,6 +285,59 @@ public class ContentService {
         return contentList;
     }
 
+    public static void gravaRegistro(String registro, String nomeArq) {
+        BufferedWriter saida = null;
+
+        // try-catch para abrir o arquivo
+        try {
+            saida = new BufferedWriter(new FileWriter(nomeArq, true));
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao abrir o arquivo");
+            erro.printStackTrace();
+        }
+
+        // try-catch para gravar e fechar o arquivo
+        try {
+            saida.append(registro + "\n");
+            saida.close();
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao gravar o arquivo");
+            erro.printStackTrace();
+        }
+    }
+
+    public static void gravaArquivoTxt(List<Content> lista, String nomeArq) {
+        int contaRegDados = 0;
+
+        // Monta o registro de header
+        String header = "00NOTA20222";
+        header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        header += "01";
+
+        // Grava o registro de header
+        gravaRegistro(header, nomeArq);
+
+        // Monta e grava os registros de corpo
+        String corpo;
+        for (Content a : lista) {
+            corpo = "02";
+            corpo += String.format("%-2.2s", a.getIdContent());
+            corpo += String.format("%-8.8s", a.getContentTitle());
+            corpo += String.format("%-4500.4500s", a.getContent());
+            corpo += String.format("%1d", a.getFkDistro());
+            corpo += String.format("%1d", a.getFkLevel());
+            gravaRegistro(corpo, nomeArq);
+            contaRegDados++;
+        }
+
+        // Monta e grava o registro de trailer
+        String trailer = "01";
+        trailer += String.format("%010d", contaRegDados);
+        gravaRegistro(trailer, nomeArq);
+    }
+
     public Content importContentTxt(String fileTitle) {
 
         BufferedReader input = null;
@@ -297,8 +347,6 @@ public class ContentService {
         int contaRegDadoLido = 0;
         Integer qtdRegDadoGravado;
 
-        List<Content> contentList = new ArrayList();
-
         try {
             input = new BufferedReader(new FileReader(fileTitle));
         } catch (IOException error) {
@@ -307,7 +355,6 @@ public class ContentService {
 
         try {
             registry = input.readLine();
-
             while (registry != null) {
                 registryType = registry.substring(0, 2);
                 if (registryType.equals("00")) {
@@ -328,11 +375,9 @@ public class ContentService {
                     System.out.println("Corporation Registration");
                     id = Integer.valueOf(registry.substring(2, 4));
                     contentTitle = registry.substring(4, 12).trim();
-                    content = registry.substring(12, 62).trim();
-                    distro = Integer.valueOf(registry.substring(62, 63));
-                    level = Integer.valueOf(registry.substring(63, 64));
-
-                    contaRegDadoLido++;
+                    content = registry.substring(12, 4512).trim();
+                    distro = Integer.valueOf(registry.substring(4512, 4513));
+                    level = Integer.valueOf(registry.substring(4513, 4514));
 
                     Content newContent = new Content(id, contentTitle, content, distro, level);
                     contentRepository.save(newContent);
@@ -348,12 +393,9 @@ public class ContentService {
         } catch (IOException error) {
             logger.info("[ERROR] - Error reading file: " + error);
         }
-
-//        System.out.println("\nConteúdo da lista lida do arquivo");
-//        for (Content c : contentList) {
-//            System.out.println(c);
-//        }
         return null;
     }
+
+
 
 }

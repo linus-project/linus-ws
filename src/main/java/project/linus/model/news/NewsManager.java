@@ -8,12 +8,8 @@ public class NewsManager extends Manager {
     private String newsTitle;
     private String news;
 
-    public NewsManager(String username, String password, String adminkey, Integer idNews, String newsTitle, String news) {
+    public NewsManager(String username, String password) {
         super(username, password);
-        this.adminkey = adminkey;
-        this.idNews = idNews;
-        this.newsTitle = newsTitle;
-        this.news = news;
     }
 
     public String getAdminkey() {
@@ -47,4 +43,5 @@ public class NewsManager extends Manager {
     public void setNews(String news) {
         this.news = news;
     }
+
 }

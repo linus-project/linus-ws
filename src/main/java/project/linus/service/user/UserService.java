@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import project.linus.model.content.Content;
 import project.linus.model.login.AdminLogin;
 import project.linus.model.login.UserLogin;
+import project.linus.model.news.News;
 import project.linus.model.user.User;
 import project.linus.model.user.AdminPasswordManager;
 import project.linus.model.user.UserPasswordManager;
@@ -99,6 +100,7 @@ public class UserService {
         fileTitle += ".txt";
 
         ObjectList<User> userList = new ObjectList(listSize);
+        ObjectList<News> newsList = new ObjectList(listSize);
 
         int index = 0;
 
@@ -109,7 +111,7 @@ public class UserService {
         }
 
         try {
-            file = new FileWriter(new File(fileTitle));
+            file = new FileWriter(fileTitle);
             formatter = new Formatter(file);
         } catch (IOException error) {
             logger.info("[ERROR] - exportUser: " + error);
@@ -118,24 +120,22 @@ public class UserService {
         try {
             String header = "00USUARIO20222";
             header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-            header += "01";
+            header += "00";
             formatter.format(header + "\n");
 
             String body;
             for (index = 0; index < userList.getSize(); index++) {
                 User user = userList.getElement(index);
-                body = "03";
+                body = "02";
                 body += String.format("%-5.5s", user.getIdUser());
                 body += String.format("%-20.20s", user.getName());
                 body += String.format("%-20.20s", user.getUsername());
                 body += String.format("%-35.35s", user.getEmail());
-                body += String.format("%-6.6s", user.getGenre());
-                body += String.format("%-12.12s", user.getBornDate());
-                body += String.format("%-12.12s", user.getPhoneNumber());
-                body += String.format("%02d", user.getFkLevel());
+                body += String.format("%-2.2s", user.getGenre());
+                body += String.format("%-9.9s", user.getPhoneNumber());
+                body += String.format("%1d", user.getFkLevel());
                 formatter.format(body + "\n");
             }
-
             String trailer = "01";
             trailer += String.format("%010d", index);
             formatter.format(trailer + "\n");
