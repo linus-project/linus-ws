@@ -19,10 +19,13 @@ public class News {
 
     private String news;
 
+    private Integer fkDistro;
+
     @ManyToOne
     @JoinColumn(name = "fk_user")
     @JsonBackReference
     private User fkUser;
+
 
     public News() {
 
@@ -65,5 +68,13 @@ public class News {
 
     public void setFkUser(User fkUser) {
         this.fkUser = fkUser;
+    }
+
+    public Integer getFkDistro() {
+        return fkDistro;
+    }
+
+    public void setFkDistro(Integer fkDistro) {
+        this.fkDistro = fkDistro;
     }
 }

@@ -36,6 +36,11 @@ public class NewsController {
         return ResponseEntity.ok(newsService.OrderById());
     }
 
+    @GetMapping("/distro")
+    public ResponseEntity<List<News>> getContentByFkDistro(@RequestParam Integer fkDistro) {
+        return ResponseEntity.ok(newsService.getNewsByFkDistro(fkDistro));
+    }
+
     @PostMapping
     public ResponseEntity<News> createNews(@RequestBody News newsManager,@RequestParam Integer id){
         return ResponseEntity.ok(newsService.createNews(newsManager,id));
@@ -52,8 +57,8 @@ public class NewsController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<String> exportUsers(@RequestParam Integer listSize, @RequestParam String fileTitle) {
-        return ResponseEntity.ok(newsService.exportNews(listSize, fileTitle));
+    public ResponseEntity<String> exportUsers(@RequestParam String fileTitle, @RequestParam Integer fkDistro) {
+        return ResponseEntity.ok(newsService.exportNews(fileTitle,fkDistro));
     }
 
     @PostMapping("/import")

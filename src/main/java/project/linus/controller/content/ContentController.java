@@ -33,7 +33,7 @@ public class ContentController {
     }
 
     @GetMapping("/distro")
-    public ResponseEntity<List<Content>> getContentByFkDistro(@PathVariable Integer fkDistro) {
+    public ResponseEntity<List<Content>> getContentByFkDistro(@RequestParam Integer fkDistro) {
         return ResponseEntity.ok(contentService.getContentByFkDistro(fkDistro));
     }
 

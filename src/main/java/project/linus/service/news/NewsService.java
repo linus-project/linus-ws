@@ -8,13 +8,12 @@ import project.linus.model.login.AdminLogin;
 import project.linus.model.news.News;
 import project.linus.model.news.NewsManager;
 import project.linus.model.user.User;
-import project.linus.repository.NewsRepository;
+import project.linus.repository.news.NewsRepository;
 import project.linus.repository.user.UserRepository;
 import project.linus.service.content.ContentService;
 import project.linus.service.login.LoginService;
 import project.linus.util.exception.GenericException;
 import project.linus.util.generic.FilaObj;
-import project.linus.util.generic.ObjectList;
 import project.linus.util.generic.PilhaObj;
 
 import java.io.*;
@@ -50,6 +49,10 @@ public class NewsService {
 
     public boolean verifyIfNewsTitleExists(String newsTitle) {
         return newsRepository.findByNewsTitle(newsTitle).isPresent();
+    }
+
+    public List<News> getNewsByFkDistro(Integer fkDistro) {
+        return newsRepository.findByFkDistro(fkDistro);
     }
 
     public News createNews(News newsM, Integer id) {
@@ -190,11 +193,11 @@ public class NewsService {
 
                 contaRegDadoLido++;
 
-                News newNews = new News(null, newsTitle, news,null);
+                News newNews = new News(null, newsTitle, news, null);
                 listaLidaNews.add(newNews);
 
             } else if (registryType.equals("03")) {
-                idUser = Integer.valueOf(registry.substring(2,3));
+                idUser = Integer.valueOf(registry.substring(2, 3));
                 name = registry.substring(3, 27).trim();
                 userName = registry.substring(27, 47).trim();
                 email = registry.substring(47, 82).trim();
@@ -204,7 +207,7 @@ public class NewsService {
 
                 contaRegDadoLido++;
 
-                User newUser = new User(idUser, name, userName, email, genero, numTelefone,nivelUser);
+                User newUser = new User(idUser, name, userName, email, genero, numTelefone, nivelUser);
                 listaLidaUsuarios.add(newUser);
 
             } else {
@@ -230,7 +233,7 @@ public class NewsService {
             newUser.setPhoneNumber(u.getPhoneNumber());
             newUser.setFkLevel(u.getFkLevel());
 
-            if (userRepository.existsById(newUser.getIdUser())){
+            if (userRepository.existsById(newUser.getIdUser())) {
                 News newNews = new News();
                 newNews.setNewsTitle(n.getNewsTitle());
                 newNews.setNews(n.getNews());
@@ -244,21 +247,24 @@ public class NewsService {
         throw new GenericException();
     }
 
-    public String exportNews(Integer listSize, String fileTitle) {
+    public String exportNews(String fileTitle, Integer fkDistro) {
+
+        boolean newsDistro = newsRepository.existsByFkDistro(fkDistro);
+
 
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".txt";
 
-        ObjectList<News> newsList = new ObjectList(listSize);
+        List<News> newsList = new ArrayList();
 
         int index = 0;
 
-        for (News news : newsRepository.findAll()) {
+        for (News news : newsRepository.findByFkDistro(fkDistro)) {
             newsList.add(news);
-            if (index == listSize - 1) break;
             index++;
         }
+
 
         try {
             file = new FileWriter(fileTitle);
@@ -267,6 +273,8 @@ public class NewsService {
             logger.info("[ERROR] - exportNews: " + error);
         }
 
+        if (newsRepository.existsByFkDistro(fkDistro)){
+
         try {
             String header = "00NEWS";
             header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
@@ -274,12 +282,11 @@ public class NewsService {
             formatter.format(header + "\n");
 
             String body;
-            for (index = 0; index < newsList.getSize(); index++) {
-                News news = newsList.getElement(index);
+            for (News n : newsList) {
                 body = "02";
-                body += String.format("%-5.5s", news.getIdNews());
-                body += String.format("%-22.22s", news.getNewsTitle());
-                body += String.format("%-671.671s", news.getNews());
+                body += String.format("%-5.5s", n.getIdNews());
+                body += String.format("%-22.22s", n.getNewsTitle());
+                body += String.format("%-671.671s", n.getNews());
 
                 formatter.format(body + "\n");
             }
@@ -299,6 +306,8 @@ public class NewsService {
         }
         logger.info("The file " + fileTitle + " has been exported successfully!");
         return exportUrl + fileTitle;
+        }
+        return "distribution does not exist" ;
     }
 
     public FilaObj<News> getFilaOperacao() {
