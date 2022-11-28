@@ -20,6 +20,8 @@ public class News {
     private String newsTitle;
 
     private String news;
+
+    private Integer fkDistro;
     
     @ManyToOne
     @JoinColumn(name = "fk_user")
