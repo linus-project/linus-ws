@@ -26,7 +26,7 @@ public class News {
     @JsonBackReference
     private User fkUser;
 
-    private LocalDateTime insertDate;
+    private final LocalDateTime insertDate = LocalDateTime.now();
 
     public News() {
 

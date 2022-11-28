@@ -37,8 +37,8 @@ public class NewsController {
     }
 
     @PostMapping
-    public ResponseEntity<News> createNews(@RequestBody News newsManager,@RequestParam Integer id){
-        return ResponseEntity.ok(newsService.createNews(newsManager,id));
+    public ResponseEntity<News> createNews(@RequestBody News newsManager){
+        return ResponseEntity.ok(newsService.createNews(newsManager));
     }
 
     @PutMapping

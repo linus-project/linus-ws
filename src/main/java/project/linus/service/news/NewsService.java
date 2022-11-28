@@ -17,7 +17,8 @@ import project.linus.util.generic.FilaObj;
 import project.linus.util.generic.ObjectList;
 import project.linus.util.generic.PilhaObj;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -52,22 +53,25 @@ public class NewsService {
         return newsRepository.findByNewsTitle(newsTitle).isPresent();
     }
 
-    public News createNews(News newsM, Integer id) {
-        News news = new News();
+    public News createNews(News newsManager) {
+        User user = userRepository.findByUsername(newsManager.getFkUser().getUsername());
 
-        User user = new User();
-        user.setIdUser(id);
+        News news = new News(
+                newsManager.getIdNews(),
+                newsManager.getNewsTitle(),
+                newsManager.getNews(),
+                user);
 
-        if (userRepository.existsById(id)) {
-            if (!verifyIfNewsTitleExists(newsM.getNewsTitle())) {
-                news.setNewsTitle(newsM.getNewsTitle());
-                news.setNews(newsM.getNews());
-                agendarOperacao(news);
-                news.setFkUser(user);
-                newsRepository.save(news);
-                publicarNews();
-                return news;
-            }
+        AdminLogin admin = new AdminLogin(
+                newsManager.getFkUser().getUsername(),
+                newsManager.getFkUser().getPassword(),
+                newsManager.getFkUser().getAdminKey());
+
+        if (!verifyIfNewsTitleExists(newsManager.getNewsTitle()) && loginService.login(admin) != null) {
+            agendarOperacao(news);
+            newsRepository.save(news);
+            publicarNews();
+            return news;
         }
 
         throw new GenericException();
@@ -190,11 +194,11 @@ public class NewsService {
 
                 contaRegDadoLido++;
 
-                News newNews = new News(null, newsTitle, news,null);
+                News newNews = new News(null, newsTitle, news, null);
                 listaLidaNews.add(newNews);
 
             } else if (registryType.equals("03")) {
-                idUser = Integer.valueOf(registry.substring(2,3));
+                idUser = Integer.valueOf(registry.substring(2, 3));
                 name = registry.substring(3, 27).trim();
                 userName = registry.substring(27, 47).trim();
                 email = registry.substring(47, 82).trim();
@@ -204,7 +208,7 @@ public class NewsService {
 
                 contaRegDadoLido++;
 
-                User newUser = new User(idUser, name, userName, email, genero, numTelefone,nivelUser);
+                User newUser = new User(idUser, name, userName, email, genero, numTelefone, nivelUser);
                 listaLidaUsuarios.add(newUser);
 
             } else {
@@ -230,7 +234,7 @@ public class NewsService {
             newUser.setPhoneNumber(u.getPhoneNumber());
             newUser.setFkLevel(u.getFkLevel());
 
-            if (userRepository.existsById(newUser.getIdUser())){
+            if (userRepository.existsById(newUser.getIdUser())) {
                 News newNews = new News();
                 newNews.setNewsTitle(n.getNewsTitle());
                 newNews.setNews(n.getNews());
