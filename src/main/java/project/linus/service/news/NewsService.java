@@ -8,13 +8,12 @@ import project.linus.model.login.AdminLogin;
 import project.linus.model.news.News;
 import project.linus.model.news.NewsManager;
 import project.linus.model.user.User;
-import project.linus.repository.NewsRepository;
+import project.linus.repository.news.NewsRepository;
 import project.linus.repository.user.UserRepository;
 import project.linus.service.content.ContentService;
 import project.linus.service.login.LoginService;
 import project.linus.util.exception.GenericException;
 import project.linus.util.generic.FilaObj;
-import project.linus.util.generic.ObjectList;
 import project.linus.util.generic.PilhaObj;
 
 import java.io.FileWriter;
@@ -248,21 +247,21 @@ public class NewsService {
         throw new GenericException();
     }
 
-    public String exportNews(Integer listSize, String fileTitle) {
+    public String exportNews(String fileTitle, Integer fkDistro) {
 
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".txt";
 
-        ObjectList<News> newsList = new ObjectList(listSize);
+        List<News> newsList = new ArrayList();
 
         int index = 0;
 
-        for (News news : newsRepository.findAll()) {
+        for (News news : newsRepository.findByFkDistro(fkDistro)) {
             newsList.add(news);
-            if (index == listSize - 1) break;
             index++;
         }
+
 
         try {
             file = new FileWriter(fileTitle);
@@ -271,38 +270,41 @@ public class NewsService {
             logger.info("[ERROR] - exportNews: " + error);
         }
 
-        try {
-            String header = "00NEWS";
-            header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-            header += "00";
-            formatter.format(header + "\n");
+        if (newsRepository.existsByFkDistro(fkDistro)){
 
-            String body;
-            for (index = 0; index < newsList.getSize(); index++) {
-                News news = newsList.getElement(index);
-                body = "02";
-                body += String.format("%-5.5s", news.getIdNews());
-                body += String.format("%-22.22s", news.getNewsTitle());
-                body += String.format("%-671.671s", news.getNews());
-
-                formatter.format(body + "\n");
-            }
-            String trailer = "01";
-            trailer += String.format("%010d", index);
-            formatter.format(trailer + "\n");
-
-        } catch (FormatterClosedException error) {
-            logger.info("[ERROR] - exportUser: " + error);
-        } finally {
-            formatter.close();
             try {
-                file.close();
-            } catch (IOException error) {
+                String header = "00NEWS";
+                header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+                header += "00";
+                formatter.format(header + "\n");
+
+                String body;
+                for (News n : newsList) {
+                    body = "02";
+                    body += String.format("%-5.5s", n.getIdNews());
+                    body += String.format("%-22.22s", n.getNewsTitle());
+                    body += String.format("%-671.671s", n.getNews());
+
+                    formatter.format(body + "\n");
+                }
+                String trailer = "01";
+                trailer += String.format("%010d", index);
+                formatter.format(trailer + "\n");
+
+            } catch (FormatterClosedException error) {
                 logger.info("[ERROR] - exportUser: " + error);
+            } finally {
+                formatter.close();
+                try {
+                    file.close();
+                } catch (IOException error) {
+                    logger.info("[ERROR] - exportUser: " + error);
+                }
             }
+            logger.info("The file " + fileTitle + " has been exported successfully!");
+            return exportUrl + fileTitle;
         }
-        logger.info("The file " + fileTitle + " has been exported successfully!");
-        return exportUrl + fileTitle;
+        return "distribution does not exist" ;
     }
 
     public FilaObj<News> getFilaOperacao() {

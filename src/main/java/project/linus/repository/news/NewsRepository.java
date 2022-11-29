@@ -1,4 +1,4 @@
-package project.linus.repository;
+package project.linus.repository.news;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +13,10 @@ import java.util.Optional;
 public interface NewsRepository extends JpaRepository<News, Integer> {
     Optional<News> findByNewsTitle(String newsTitle);
     News findByIdNews(Integer idNews);
+
+    boolean existsByFkDistro(Integer fkDistro);
+
+    List<News> findByFkDistro(Integer fkDistro);
 
 //    @Query("select n from News n")
 //    List<News> getNews();
