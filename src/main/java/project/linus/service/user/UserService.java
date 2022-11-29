@@ -4,22 +4,21 @@ import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.linus.model.content.Content;
 import project.linus.model.login.AdminLogin;
 import project.linus.model.login.UserLogin;
 import project.linus.model.news.News;
+import project.linus.model.user.AdminManager;
 import project.linus.model.user.User;
-import project.linus.model.user.AdminPasswordManager;
-import project.linus.model.user.UserPasswordManager;
+import project.linus.model.user.UserManager;
 import project.linus.repository.user.UserRepository;
 import project.linus.service.content.ContentService;
+import project.linus.service.login.LoginService;
 import project.linus.util.encoder.PasswordEncoder;
 import project.linus.util.exception.EmailException;
+import project.linus.util.exception.GenericException;
 import project.linus.util.exception.UsernameException;
-import project.linus.service.login.LoginService;
 import project.linus.util.generic.ObjectList;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -79,14 +78,35 @@ public class UserService {
         return user;
     }
 
-    public User changePassword(UserPasswordManager login) {
-        User user = userRepository.findByUsername(login.getUsername());
-        user.setPassword(encoder.encode(login.getNewPassword()));
-        userRepository.save(user);
-        return user;
+    public User changeUserInfo(UserManager userManager) {
+        UserLogin userLogin = new UserLogin(userManager.getUsername(), userManager.getPassword());
+        if (loginService.login(userLogin) != null) {
+            User user = userRepository.findByUsername(userManager.getUsername());
+            if(userManager.getName() != null) {
+                user.setName(userManager.getName());
+            }
+            if (userManager.getNewUsername() != null) {
+                user.setUsername(userManager.getNewUsername());
+            }
+            if (userManager.getBornDate() != null) {
+                user.setBornDate(userManager.getBornDate());
+            }
+            if (userManager.getEmail() != null) {
+                user.setEmail(userManager.getEmail());
+            }
+            if (!userManager.getPhoneNumber().equals("ex: (11) 99999-9999")) {
+                user.setPhoneNumber(userManager.getPhoneNumber());
+            }
+            if (!userManager.getNewPassword().equals("default")) {
+                user.setPassword(encoder.encode(userManager.getNewPassword()));
+            }
+            userRepository.save(user);
+            return user;
+        }
+        throw new GenericException();
     }
 
-    public User changePasswordAdmin(AdminPasswordManager login) {
+    public User changeAdminInfo(AdminManager login) {
         User user = userRepository.findByUsername(login.getUsername());
         user.setPassword(encoder.encode(login.getNewPassword()));
         userRepository.save(user);
