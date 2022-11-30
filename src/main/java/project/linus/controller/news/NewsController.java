@@ -52,8 +52,8 @@ public class NewsController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<String> exportUsers(@RequestParam String fileTitle, @RequestParam Integer fkDistro) {
-        return ResponseEntity.ok(newsService.exportNews(fileTitle,fkDistro));
+    public ResponseEntity<String> exportUsers(@RequestParam Integer listSize, @RequestParam String fileTitle, @RequestParam Integer fkDistro) {
+        return ResponseEntity.ok(newsService.exportNews(listSize,fileTitle,fkDistro));
     }
 
     @PostMapping("/import")

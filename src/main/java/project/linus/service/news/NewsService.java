@@ -14,6 +14,7 @@ import project.linus.service.content.ContentService;
 import project.linus.service.login.LoginService;
 import project.linus.util.exception.GenericException;
 import project.linus.util.generic.FilaObj;
+import project.linus.util.generic.ObjectList;
 import project.linus.util.generic.PilhaObj;
 
 import java.io.FileWriter;
@@ -59,6 +60,7 @@ public class NewsService {
                 newsManager.getIdNews(),
                 newsManager.getNewsTitle(),
                 newsManager.getNews(),
+                newsManager.getFkDistro(),
                 user);
 
         AdminLogin admin = new AdminLogin(
@@ -149,13 +151,12 @@ public class NewsService {
         return list;
     }
 
-
-    public News importNewsTxt(String fileTitle) {
+    public News importNewsTxt(String fileTitle)  {
 
         String registry, registryType;
 
         String newsTitle, news, name, userName, email, genero, numTelefone;
-        Integer idUser, nivelUser;
+        Integer idUser, nivelUser, distro;
 
         List<News> listaLidaNews = new ArrayList();
         List<User> listaLidaUsuarios = new ArrayList();
@@ -188,12 +189,13 @@ public class NewsService {
             } else if (registryType.equals("02")) {
                 System.out.println("Corporation Registration");
 
-                newsTitle = registry.substring(3, 24).trim();
-                news = registry.substring(24, 695).trim();
+                distro = Integer.valueOf(registry.substring(2, 3));
+                newsTitle = registry.substring(4, 16).trim();
+                news = registry.substring(16, 90).trim();
 
                 contaRegDadoLido++;
 
-                News newNews = new News(null, newsTitle, news, null);
+                News newNews = new News(null, newsTitle, news, distro,null);
                 listaLidaNews.add(newNews);
 
             } else if (registryType.equals("03")) {
@@ -237,6 +239,7 @@ public class NewsService {
                 News newNews = new News();
                 newNews.setNewsTitle(n.getNewsTitle());
                 newNews.setNews(n.getNews());
+                newNews.setFkDistro(n.getFkDistro());
                 newNews.setFkUser(newUser);
                 agendarOperacao(newNews);
                 newsRepository.save(newNews);
@@ -247,21 +250,21 @@ public class NewsService {
         throw new GenericException();
     }
 
-    public String exportNews(String fileTitle, Integer fkDistro) {
+    public String exportNews(Integer listSize, String fileTitle, Integer fkDistro) {
 
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".txt";
 
-        List<News> newsList = new ArrayList();
+        ObjectList<News> newsList = new ObjectList(listSize);
 
         int index = 0;
 
         for (News news : newsRepository.findByFkDistro(fkDistro)) {
             newsList.add(news);
+            if (index == listSize - 1) break;
             index++;
         }
-
 
         try {
             file = new FileWriter(fileTitle);
@@ -279,11 +282,15 @@ public class NewsService {
                 formatter.format(header + "\n");
 
                 String body;
-                for (News n : newsList) {
+                for (index = 0; index < newsList.getSize(); index++) {
+                    News news = newsList.getElement(index);
                     body = "02";
-                    body += String.format("%-5.5s", n.getIdNews());
-                    body += String.format("%-22.22s", n.getNewsTitle());
-                    body += String.format("%-671.671s", n.getNews());
+                    body += String.format("%-5.5s", news.getIdNews());
+                    body += String.format("%-13.13s", news.getNewsTitle());
+                    body += String.format("%-74.74s", news.getNews());
+                    body += String.format("%2d", news.getFkDistro());
+                    body += String.format("%14.14s",news.getFkUser().getUsername());
+                    body += String.format("%25.25s",news.getInsertDate());
 
                     formatter.format(body + "\n");
                 }
