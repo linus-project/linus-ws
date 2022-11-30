@@ -59,11 +59,10 @@ public class LoginService {
     public User login(UserLogin login) {
         User user = userRepository.findByUsername(login.getUsername());
         if (user != null) {
-            boolean haveAdminKey = user.adminKey() == null;
             boolean usernameIsValid = user.getUsername().equals(login.getUsername());
             boolean passwordIsValid = encoder.verify(login.getPassword(), user.getPassword());
 
-            if (haveAdminKey && usernameIsValid && passwordIsValid) {
+            if (usernameIsValid && passwordIsValid) {
                 return user;
             }
         }
