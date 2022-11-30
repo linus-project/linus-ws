@@ -255,6 +255,7 @@ public class NewsService {
         FileWriter file = null;
         Formatter formatter = null;
         fileTitle += ".txt";
+        String response = "";
 
         ObjectList<News> newsList = new ObjectList(listSize);
 
@@ -280,6 +281,7 @@ public class NewsService {
                 header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
                 header += "00";
                 formatter.format(header + "\n");
+                response += (header + "\n");
 
                 String body;
                 for (index = 0; index < newsList.getSize(); index++) {
@@ -293,10 +295,12 @@ public class NewsService {
                     body += String.format("%25.25s",news.getInsertDate());
 
                     formatter.format(body + "\n");
+                    response += (body + "\n");
                 }
                 String trailer = "01";
                 trailer += String.format("%010d", index);
                 formatter.format(trailer + "\n");
+                response += (trailer + "\n");
 
             } catch (FormatterClosedException error) {
                 logger.info("[ERROR] - exportUser: " + error);
@@ -309,7 +313,7 @@ public class NewsService {
                 }
             }
             logger.info("The file " + fileTitle + " has been exported successfully!");
-            return exportUrl + fileTitle;
+            return response;
         }
         return "distribution does not exist" ;
     }
