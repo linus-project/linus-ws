@@ -1,4 +1,4 @@
 00NEWS24-11-2022 20:07:1401
-02 Atualização - WSL 3.0 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sagittis mauris ut dignissim convallis. Etiam eu rutrum purus. Quisque eu felis ac nisl tincidunt vehicula. Proin et massa malesuada, aliqam tortor at, rhoncus est. Phasellus diam nisl, sagittis vitae finibus nec, maximus sodales ligula. Phasellus ut dictum ipsum. Ut a ipsum eget enim porta dictum ut a dui. Ut volutpat arcu quis nunc feugiat ornare nec in augue. Phasellus suscipit sollicitudin lectus ac bibendum. Pellentesque sapien nunc, euismod vitae ligula ac, dignissim euismod justo. Nam consequat eget lectus et eleifend. Vivamus augue libero, ultricies et aliquam ac, vulputate pellentesque nulla.
+025 Linux Mint20        Linux Mint 20 “Ulyana” tem ISO finalizada e será lançado em breve.
 039    Alex Barreira       alex.barreira       alex.barreira@gmail.com            M 951234563 3
 010000000002

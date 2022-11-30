@@ -34,10 +34,11 @@ public class News {
 
     }
 
-    public News(Integer idNews, String newsTitle, String news, User fkUser) {
+    public News(Integer idNews, String newsTitle, String news, Integer fkDistro, User fkUser) {
         this.idNews = idNews;
         this.newsTitle = newsTitle;
         this.news = news;
+        this.fkDistro = fkDistro;
         this.fkUser = fkUser;
     }
 
@@ -63,6 +64,14 @@ public class News {
 
     public void setNews(String news) {
         this.news = news;
+    }
+
+    public Integer getFkDistro() {
+        return fkDistro;
+    }
+
+    public void setFkDistro(Integer fkDistro) {
+        this.fkDistro = fkDistro;
     }
 
     public User getFkUser() {
