@@ -35,7 +35,7 @@ public class ContentService {
     @Autowired
     UserRepository userRepository;
 
-    private String exportUrl = "~/Documents/git-projects/linus-ws/target/";
+    private String exportUrl = "~/Documents/git-projects/linus-ws/";
 
     private final Logger logger = LoggerFactory.logger(ContentService.class);
 
@@ -167,6 +167,7 @@ public class ContentService {
         Formatter formatter = null;
         fileTitle += ".csv";
         ObjectList<Content> contentList = new ObjectList(listSize);
+        String response = "";
 
         int index = 0;
 
@@ -186,9 +187,17 @@ public class ContentService {
         try {
             contentList = bubbleSortByLevel(contentList);
             formatter.format("TITULO;CONTEUDO;DISTRO;NIVEL\n");
+            response += ("TITULO;CONTEUDO;DISTRO;NIVEL\n");
             for (index = 0; index < contentList.getSize(); index++) {
                 Content content = contentList.getElement(index);
                 formatter.format(
+                        "%s;%s;%s;%s\n",
+                        content.getContentTitle(),
+                        content.getContent(),
+                        content.getFkDistro(),
+                        content.getFkLevel()
+                );
+                response += String.format(
                         "%s;%s;%s;%s\n",
                         content.getContentTitle(),
                         content.getContent(),
@@ -207,7 +216,7 @@ public class ContentService {
             }
         }
         logger.info("The file " + fileTitle + " has been exported successfully!");
-        return exportUrl + fileTitle;
+        return response;
     }
 
     public String exportContentTxt(String fileTitle, String contentTitle, Integer listSize) {
@@ -215,6 +224,7 @@ public class ContentService {
         Formatter formatter = null;
         fileTitle += ".txt";
         ObjectList<Content> contentList = new ObjectList(listSize);
+        String response = "";
 
         int index = 0;
 
@@ -238,6 +248,7 @@ public class ContentService {
             header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
             header += "01";
             formatter.format(header + "\n");
+            response += (header + "\n");
 
             String body;
             for (index = 0; index < contentList.getSize(); index++) {
@@ -249,11 +260,13 @@ public class ContentService {
                 body += String.format("%02d", content.getFkDistro());
                 body += String.format("%02d", content.getFkLevel());
                 formatter.format(body + "\n");
+                response += (body + "\n");
             }
 
             String trailer = "01";
             trailer += String.format("%010d", index);
             formatter.format(trailer + "\n");
+            response += (trailer + "\n");
 
         } catch (FormatterClosedException error) {
             logger.info("[ERROR] - exportContent: " + error);
@@ -266,7 +279,7 @@ public class ContentService {
             }
         }
         logger.info("The file " + fileTitle + " has been exported successfully!");
-        return exportUrl + fileTitle;
+        return response;
     }
 
     public boolean verifyIfContentTitleExists(String contentTitle) {
