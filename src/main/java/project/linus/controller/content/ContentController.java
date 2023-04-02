@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import project.linus.model.content.Content;
 import project.linus.model.content.ContentManager;
 import project.linus.model.content.UserFavoriteContent;
+import project.linus.model.content.UserHistoryContent;
 import project.linus.service.content.ContentService;
 
 import java.util.List;
@@ -68,6 +69,16 @@ public class ContentController {
     @PostMapping("/favorite")
     public ResponseEntity<Content> favoriteContent(@RequestBody UserFavoriteContent userFavoriteContent) {
         return ResponseEntity.ok(contentService.favoriteContent(userFavoriteContent));
+    }
+
+    @PostMapping("/history")
+    public ResponseEntity<Content> historyontent(@RequestBody UserHistoryContent userHistoryContent) {
+        return ResponseEntity.ok(contentService.historyContent(userHistoryContent));
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<Content>> getHistoryContentByLevel(@RequestParam Integer idUser) {
+        return ResponseEntity.ok(contentService.getHistoryContentByLevel(idUser));
     }
 
     @GetMapping("/export/csv")

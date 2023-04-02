@@ -27,9 +27,9 @@ public class LinusWsApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				String urls = env.getProperty("cors.urls");
 				CorsRegistration reg = registry.addMapping("/**");
-				for(String url: urls.split(",")) {
-					reg.allowedOrigins(url);
-				}
+//				for(String url: urls.split(",")) {
+//					reg.allowedOrigins(url);
+//				}
 			}
 		};
 	}

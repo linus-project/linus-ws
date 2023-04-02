@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import project.linus.model.content.Content;
 import project.linus.model.content.ContentManager;
 import project.linus.model.content.UserFavoriteContent;
+import project.linus.model.content.UserHistoryContent;
 import project.linus.model.login.AdminLogin;
 import project.linus.repository.content.ContentRepository;
 import project.linus.repository.content.UserFavoriteContentRepository;
+import project.linus.repository.content.UserHistoryContentRepository;
 import project.linus.repository.user.UserRepository;
 import project.linus.service.login.LoginService;
 import project.linus.util.exception.GenericException;
@@ -28,6 +30,9 @@ public class ContentService {
 
     @Autowired
     UserFavoriteContentRepository userFavoriteContentRepository;
+
+    @Autowired
+    UserHistoryContentRepository userHistoryContentRepository;
 
     @Autowired
     LoginService loginService;
@@ -160,6 +165,30 @@ public class ContentService {
             return content;
         }
         throw new GenericException();
+    }
+
+    public Content historyContent(UserHistoryContent userHistoryContent) {
+        Content content = contentRepository.findByIdContent(userHistoryContent.getFkContent());
+        boolean login = userRepository.findByIdUser(userHistoryContent.getFkUser()).isPresent();
+        if (content != null && login) {
+            userHistoryContent.setContentLevel(content.getFkLevel());
+            userHistoryContentRepository.save(userHistoryContent);
+            return content;
+        }
+        throw new GenericException();
+    }
+
+    public List<Content> getHistoryContentByLevel(Integer idUser) {
+        List<UserHistoryContent> userHistoryContentList = userHistoryContentRepository.findByFkUser(idUser);
+        List<Content> contentList = new ArrayList<>();
+        boolean login = userRepository.findByIdUser(idUser).isPresent();
+        if (login) {
+            for (UserHistoryContent historyContent : userHistoryContentList) {
+                contentList.add(contentRepository.findByIdContent(historyContent.getFkContent()));
+            }
+            contentList = contentList.stream().sorted(Comparator.comparing(Content::getIdContent)).limit(3).toList();
+        }
+        return contentList;
     }
 
     public String exportContentCsv(String fileTitle, String contentTitle, Integer listSize) {
