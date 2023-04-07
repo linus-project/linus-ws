@@ -186,7 +186,8 @@ public class ContentService {
             for (UserHistoryContent historyContent : userHistoryContentList) {
                 contentList.add(contentRepository.findByIdContent(historyContent.getFkContent()));
             }
-            contentList = contentList.stream().sorted(Comparator.comparing(Content::getIdContent)).limit(3).toList();
+            Collections.reverse(contentList);
+            contentList = contentList.stream().distinct().limit(3).toList();
         }
         return contentList;
     }
