@@ -1,18 +1,17 @@
 package project.linus.controller.news;
 
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import project.linus.model.content.Content;
+import project.linus.controller.login.LoginController;
 import project.linus.model.news.News;
 import project.linus.model.news.NewsManager;
-import project.linus.repository.user.UserRepository;
 import project.linus.service.news.NewsService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/news")
@@ -21,8 +20,11 @@ public class NewsController {
     @Autowired
     NewsService newsService;
 
+    Logger logger = Logger.getLogger(LoginController.class.getName());
+
     @GetMapping
     public ResponseEntity<List<News>> getNewsAll() {
+        logger.info("Class: NewsController - Method: getNewsAll");
         return ResponseEntity.ok(newsService.getNewsAll());
     }
 
