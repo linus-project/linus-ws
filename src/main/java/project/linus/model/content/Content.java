@@ -17,6 +17,8 @@ public class Content {
 
     private Integer fkLevel;
 
+    private String videoPath;
+
     public Content() {
     }
 
@@ -64,4 +66,15 @@ public class Content {
         this.fkLevel = fkLevel;
     }
 
+    public void setIdContent(Integer idContent) {
+        this.idContent = idContent;
+    }
+
+    public String getVideoPath() {
+        return videoPath;
+    }
+
+    public void setVideoPath(String videoPath) {
+        this.videoPath = videoPath;
+    }
 }

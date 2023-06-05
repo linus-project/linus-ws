@@ -2,6 +2,7 @@ package project.linus.service.distro;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.linus.controller.login.LoginController;
 import project.linus.model.distro.Distro;
 import project.linus.model.distro.DistroManager;
 import project.linus.model.login.AdminLogin;
@@ -11,6 +12,7 @@ import project.linus.util.exception.GenericException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class DistroService {
@@ -20,8 +22,10 @@ public class DistroService {
 
     @Autowired
     LoginService loginService;
+    Logger logger = Logger.getLogger(LoginController.class.getName());
 
     public List<Distro> getDistro() {
+        logger.info("Class: DistroService - Method: getDistro");
         return distroRepository.findAll();
     }
 

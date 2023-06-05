@@ -40,7 +40,7 @@ public class UserService {
     private final Logger logger = LoggerFactory.logger(ContentService.class);
 
     public User addUser(User user) {
-        if (!verifyIfUserExists(user)) {
+        if (!verifyIfUserExists(user) && user.getAcceptedTerm() == 1) {
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);
         }
