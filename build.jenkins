@@ -1,1 +1,39 @@
-sh mvnw clean package
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+
+            steps {
+
+                echo "Checkout Test - Ok"
+
+            }
+
+        }
+
+    stage('Build') {
+
+            steps {
+
+                echo "Build Test - Ok"
+
+
+            }
+
+        }
+
+        stage('Deploy') {
+
+            steps {
+
+                echo "Build Test - Ok"
+
+            }
+
+        }
+        
+    }
+}
