@@ -8,7 +8,7 @@ pipeline {
 
             steps {
 
-                pwd
+                sh "pwd"
 
             }
 
@@ -18,7 +18,7 @@ pipeline {
 
             steps {
 
-                whoami
+                sh "whoami"
 
 
             }
