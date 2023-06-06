@@ -28,7 +28,7 @@ pipeline {
 
             steps {
 
-                sh "java -jar /var/lib/jenkins/workspace/linus-ws/target/linus-ws-0.0.1-SNAPSHOT.jar"
+                sh "java -jar /var/lib/jenkins/workspace/linus-ws/target/linus-ws-0.0.1-SNAPSHOT.jar&"
 
             }
 
