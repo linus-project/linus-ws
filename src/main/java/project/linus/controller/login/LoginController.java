@@ -10,7 +10,7 @@ import project.linus.service.login.LoginService;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/logiF")
 public class LoginController {
     @Autowired
     LoginService loginService;
