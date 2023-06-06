@@ -25,16 +25,19 @@ public class LoginController {
 
     @PostMapping("/admin/username")
     public ResponseEntity<User> login(@RequestBody AdminLogin login) {
+        logger.info("Class: LoginController - Method: login");
         return ResponseEntity.ok(loginService.login(login));
     }
 
     @PostMapping("/email")
     public ResponseEntity<User> login(@RequestBody UserLoginEmail login){
+        logger.info("Class: LoginController - Method: login");
         return ResponseEntity.ok(loginService.login(login));
     }
 
     @PostMapping("/admin/email")
     public ResponseEntity<User> login(@RequestBody AdminLoginEmail login){
+        logger.info("Class: LoginController - Method: login");
         return ResponseEntity.ok(loginService.login(login));
     }
 
