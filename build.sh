@@ -1,0 +1,1 @@
+sh mvnw clean package
