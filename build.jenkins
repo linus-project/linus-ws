@@ -8,7 +8,7 @@ pipeline {
 
             steps {
 
-                sh "pwd"
+                sh "/var/lib/jenkins/workspace/linus-ws/mvnw clean package"
 
             }
 
