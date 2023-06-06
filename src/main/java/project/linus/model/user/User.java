@@ -39,8 +39,6 @@ public class User {
 
     private Integer isBlocked;
 
-    private Integer acceptedTerm;
-
     public User() {
     }
 
@@ -152,13 +150,5 @@ public class User {
 
     public void setIsBlocked(Integer isBlocked) {
         this.isBlocked = isBlocked;
-    }
-
-    public Integer getAcceptedTerm() {
-        return acceptedTerm;
-    }
-
-    public void setAcceptedTerm(Integer acceptedTerm) {
-        this.acceptedTerm = acceptedTerm;
     }
 }

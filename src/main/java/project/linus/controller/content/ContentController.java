@@ -82,12 +82,13 @@ public class ContentController {
 
     @PostMapping("/history")
     public ResponseEntity<Content> historyContent(@RequestBody UserHistoryContent userHistoryContent) {
-        logger.info("Class: ContentController - Method: historyontent \nBody: " + userHistoryContent);
+        logger.info("Class: ContentController - Method: historyContent \nBody: " + userHistoryContent);
         return ResponseEntity.ok(contentService.historyContent(userHistoryContent));
     }
 
     @GetMapping("/history")
     public ResponseEntity<List<Content>> getHistoryContentByLevel(@RequestParam Integer idUser) {
+        logger.info("Class: ContentController - Method: historyContentByIdUser - \nidUser: " + idUser);
         return ResponseEntity.ok(contentService.getHistoryContentByLevel(idUser));
     }
 

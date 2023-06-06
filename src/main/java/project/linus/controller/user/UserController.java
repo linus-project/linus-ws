@@ -3,6 +3,7 @@ package project.linus.controller.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.linus.controller.login.LoginController;
 import project.linus.model.login.AdminLogin;
 import project.linus.model.login.UserLogin;
 import project.linus.model.user.User;
@@ -11,6 +12,7 @@ import project.linus.model.user.UserManager;
 import project.linus.service.user.UserService;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/users")
@@ -18,8 +20,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    Logger logger = Logger.getLogger(UserController.class.getName());
+
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User user){
+        logger.info("Class: UserController - Method: addUser");
         return ResponseEntity.ok(userService.addUser(user));
     }
 
