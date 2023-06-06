@@ -30,7 +30,7 @@ public class NewsController {
 
     @GetMapping("/idNews")
     public ResponseEntity<News> getNewsId(@RequestParam Integer idNews) {
-        logger.info("Class: LoginController - Method: getNewsId");
+        logger.info("Class: NewsController - Method: getNewsId");
         return ResponseEntity.of(newsService.getNewsId(idNews));
     }
 
